@@ -88,8 +88,23 @@ namespace Fog_Project
             singleRight.Rotation = Vector3.Zero;
             singleRight.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionSingle");
 
+            MetaModel bench = new MetaModel();
+            bench.model = gManager.Load<Model>("Models/Giblies/bench");
+            bench.Position = new Vector3(-1.5f, 0, -0.5f);
+            bench.Rotation = Vector3.Zero;
+            bench.Texture = gManager.Load<Texture2D>("Textures/Giblies/bench");
+
+            MetaModel benchTwo = new MetaModel();
+            benchTwo.model = gManager.Load<Model>("Models/Giblies/bench");
+            benchTwo.Position = bench.Position + new Vector3(1.75f, 0, 0);
+            benchTwo.Rotation = Vector3.Zero;
+            benchTwo.Texture = gManager.Load<Texture2D>("Textures/Giblies/bench");
+
             modelsToDraw.Add(junction);
             modelsToDraw.Add(singleLeft);
+            modelsToDraw.Add(singleRight);
+            modelsToDraw.Add(bench);
+            modelsToDraw.Add(benchTwo);
 
             UpdateViewMatrix();
             currentMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f), gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
@@ -130,7 +145,7 @@ namespace Fog_Project
             // Draw the title of the menu:
             sBatch.Begin();
             Vector2 stringSize = mFont.MeasureString(this.title);
-            Vector2 menuTitleCenter = new Vector2((gDevice.Viewport.Width / 2) - (stringSize.X / 2), (gDevice.Viewport.Height / 2) - (stringSize.Y / 2));
+            Vector2 menuTitleCenter = new Vector2((gDevice.Viewport.Width / 2) - (stringSize.X / 2), (gDevice.Viewport.Height / 4) - (stringSize.Y / 2));
             sBatch.DrawString(mFont, this.title, menuTitleCenter, Color.DarkBlue);
 
             // Draw the menu items:
