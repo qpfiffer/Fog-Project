@@ -26,5 +26,11 @@ namespace Fog_Project
         }
 
         public event WorkFunc doWork;
+
+        public void GetItDone(object caller)
+        {
+            if (doWork != null)
+                doWork(caller, new EventArgs());
+        }
     }
 }

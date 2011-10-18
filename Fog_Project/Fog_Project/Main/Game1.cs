@@ -111,6 +111,10 @@ namespace Fog_Project
                 case GameState.menu:
                     mainMenu.handleInput(ref inputInfo);
                     mainMenu.Update(gameTime);
+
+                    if (mainMenu.Flag == MenuFlags.quit)
+                        this.Exit();
+
                     break;
                 case GameState.loading:
                     break;

@@ -134,6 +134,7 @@ namespace Fog_Project
 
         public void handleInput(ref InputInfo info)
         {
+            #region ENTRY_SELECTION
             if (info.curKBDState.IsKeyDown(Keys.Down) &&
                 info.oldKBDState.IsKeyUp(Keys.Down))
             {
@@ -150,6 +151,13 @@ namespace Fog_Project
                 selectedEntry = menuItems.Count - 1;
             else if (selectedEntry >= menuItems.Count)
                 selectedEntry = 0;
+            #endregion
+
+            if (info.curKBDState.IsKeyDown(Keys.Enter) &&
+                info.oldKBDState.IsKeyUp(Keys.Enter))
+            {
+                menuItems[selectedEntry].GetItDone(this);
+            }
         }
 
         public void Draw(SpriteBatch sBatch)
