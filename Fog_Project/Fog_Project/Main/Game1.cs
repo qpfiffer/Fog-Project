@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Fog_Project.Utilities;
 
 namespace Fog_Project
 {
@@ -29,11 +30,7 @@ namespace Fog_Project
         #endregion
 
         #region INPUT
-        KeyboardState oldKBDState;
-        KeyboardState curKBDState;
-
-        MouseState oldMouseState;
-        MouseState curMouseState;
+        InputInfo inputInfo;
         #endregion
 
         #region GAMESTATE_MANAGEMENT
@@ -88,6 +85,10 @@ namespace Fog_Project
 
             mainMenu = new Menu(GraphicsDevice, "FOG PROJECT");
             mainMenu.Load(Content);
+
+            inputInfo = new InputInfo();
+            inputInfo.oldKBDState = Keyboard.GetState();
+            inputInfo.oldMouseState = Mouse.GetState();
         }
 
         protected override void UnloadContent()
@@ -96,6 +97,11 @@ namespace Fog_Project
 
         protected override void Update(GameTime gameTime)
         {
+            #region INPUT_UPDATE
+            inputInfo.curKBDState = Keyboard.GetState();
+            inputInfo.curMouseState = Mouse.GetState();
+            #endregion
+
             // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
@@ -103,6 +109,7 @@ namespace Fog_Project
             switch (gameState)
             {
                 case GameState.menu:
+                    mainMenu.handleInput(ref inputInfo);
                     mainMenu.Update(gameTime);
                     break;
                 case GameState.loading:
@@ -110,6 +117,11 @@ namespace Fog_Project
                 case GameState.game:
                     break;
             }
+
+            #region INPUT_UPDATE
+            inputInfo.oldMouseState = inputInfo.curMouseState;
+            inputInfo.oldKBDState = inputInfo.curKBDState;
+            #endregion
 
             base.Update(gameTime);
         }

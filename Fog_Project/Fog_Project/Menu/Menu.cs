@@ -6,16 +6,18 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
+using Fog_Project.Utilities;
+using Fog_Project.Interfaces;
 
 namespace Fog_Project
 {
     public enum MenuFlags { normal, startGame, quit, options };
-    class Menu
+    class Menu: IInputHandler
     {
         #region MENU_STUFF
         string title;
         int selectedEntry;
-        List<MenuItem> items;
+        List<MenuItem> menuItems;
         SpriteFont mFont;
 
         public MenuFlags Flag { get; set; }
@@ -37,7 +39,7 @@ namespace Fog_Project
             this.selectedEntry = 0;
             this.gDevice = gDevice;
             this.title = title;
-            this.items = new List<MenuItem>();
+            this.menuItems = new List<MenuItem>();
             this.Flag = MenuFlags.normal;
             #endregion
             #region Scenery
@@ -66,8 +68,8 @@ namespace Fog_Project
             begin.doWork += beginFunc;
             quit.doWork += quitFunc;
 
-            items.Add(begin);
-            items.Add(quit);
+            menuItems.Add(begin);
+            menuItems.Add(quit);
             #endregion
             #region Scenery
             MetaModel junction = new MetaModel();
@@ -130,6 +132,26 @@ namespace Fog_Project
         {
         }
 
+        public void handleInput(ref InputInfo info)
+        {
+            if (info.curKBDState.IsKeyDown(Keys.Down) &&
+                info.oldKBDState.IsKeyUp(Keys.Down))
+            {
+                selectedEntry++;
+            }
+
+            if (info.curKBDState.IsKeyDown(Keys.Up) &&
+                info.oldKBDState.IsKeyUp(Keys.Up))
+            {
+                selectedEntry--;
+            }
+
+            if (selectedEntry < 0)
+                selectedEntry = menuItems.Count - 1;
+            else if (selectedEntry >= menuItems.Count)
+                selectedEntry = 0;
+        }
+
         public void Draw(SpriteBatch sBatch)
         {
             gDevice.DepthStencilState = DepthStencilState.Default;
@@ -149,12 +171,12 @@ namespace Fog_Project
             sBatch.DrawString(mFont, this.title, menuTitleCenter, Color.DarkBlue);
 
             // Draw the menu items:
-            for (int i = 0; i < items.Count; i++)
+            for (int i = 0; i < menuItems.Count; i++)
             {
                 if (i == selectedEntry)
-                    sBatch.DrawString(mFont, items[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 16.0f)), Color.Blue);
+                    sBatch.DrawString(mFont, menuItems[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 16.0f)), Color.Blue);
                 else
-                    sBatch.DrawString(mFont, items[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 16.0f)), Color.DarkBlue);
+                    sBatch.DrawString(mFont, menuItems[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 16.0f)), Color.DarkBlue);
             }
             sBatch.End();
         }
