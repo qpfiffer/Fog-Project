@@ -79,7 +79,7 @@ namespace Fog_Project
             globalEffect.FogEnabled = true;
             globalEffect.FogColor = Color.LightCyan.ToVector3();
             globalEffect.FogStart = 1.0f;
-            globalEffect.FogEnd = 5.0f;
+            globalEffect.FogEnd = 7.0f;
 
             globalEffect.EnableDefaultLighting();
             globalEffect.TextureEnabled = true;
@@ -113,12 +113,18 @@ namespace Fog_Project
             benchTwo.Rotation = Vector3.Zero;
             benchTwo.Texture = gManager.Load<Texture2D>("Textures/Giblies/bench");
 
-            TexturedPlane test = ModelUtil.CreateTexturedPlane(new Vector3(0, -0.5f, 0),
-                new Vector2(10.0f),
-                gManager.Load<Texture2D>("Textures/Ocean/ocean"),
-                gDevice);
-
-            oceanTiles.Add(test);
+            const float oceanTileSize = 5.0f;
+            for (int x = -2; x < 3; x++)
+            {
+                for (int y = -2; y < 3; y++)
+                {
+                    TexturedPlane test = ModelUtil.CreateTexturedPlane(new Vector3(x * oceanTileSize, -0.5f, y * oceanTileSize),
+                        new Vector2(oceanTileSize),
+                        gManager.Load<Texture2D>("Textures/Ocean/ocean"),
+                        gDevice);
+                    oceanTiles.Add(test);
+                }
+            }
 
             modelsToDraw.Add(junction);
             modelsToDraw.Add(singleLeft);
