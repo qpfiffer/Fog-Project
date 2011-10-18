@@ -37,7 +37,7 @@ namespace Fog_Project.Utilities
 
     public static class ModelUtil
     {
-        public static void DrawModel(MetaModel m, MatrixDescriptor matrices)
+        public static void DrawModel(MetaModel m, BasicEffect globalEffect)
         {
             Matrix[] transforms = new Matrix[m.model.Bones.Count];
             m.model.CopyAbsoluteBoneTransformsTo(transforms);
@@ -46,17 +46,17 @@ namespace Fog_Project.Utilities
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.FogEnabled = true;
-                    effect.FogColor = Color.LightCyan.ToVector3();
-                    effect.FogStart = 1.0f;
-                    effect.FogEnd = 5.0f;
+                    effect.FogEnabled = globalEffect.FogEnabled;
+                    effect.FogColor = globalEffect.FogColor;
+                    effect.FogStart = globalEffect.FogStart;
+                    effect.FogEnd = globalEffect.FogEnd;
 
                     effect.EnableDefaultLighting();
                     effect.Texture = m.Texture;
-                    effect.TextureEnabled = true;
+                    effect.TextureEnabled = globalEffect.TextureEnabled;
 
-                    effect.View = matrices.view;
-                    effect.Projection = matrices.proj;
+                    effect.View = globalEffect.View;
+                    effect.Projection = globalEffect.Projection;
                     effect.World = transforms[mesh.ParentBone.Index];
                     effect.World *= Matrix.CreateRotationX(m.Rotation.X);
                     effect.World *= Matrix.CreateRotationY(m.Rotation.Y);
@@ -68,11 +68,16 @@ namespace Fog_Project.Utilities
         }
         public static void DrawTexturedPlane(TexturedPlane plane, BasicEffect effect)
         {
-            effect.TextureEnabled = true;
-            effect.Texture = plane.texture;
-            plane.gDevice.Indices = plane.iBuffer;
-            plane.gDevice.SetVertexBuffer(plane.vBuffer);
-            plane.gDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 6, 0, 2);
+            foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
+                effect.TextureEnabled = true;
+                effect.Texture = plane.texture;
+                effect.EnableDefaultLighting();
+
+                plane.gDevice.Indices = plane.iBuffer;
+                plane.gDevice.SetVertexBuffer(plane.vBuffer);
+                pass.Apply();
+                plane.gDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, plane.vertices.Length, 0, 2);
+            }
 
         }
         public static TexturedPlane CreateTexturedPlane(Vector3 position, Vector2 size, Texture2D texture, GraphicsDevice gDevice)

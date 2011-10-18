@@ -26,9 +26,11 @@ namespace Fog_Project
         #region SCENE_TO_DRAW
         MatrixDescriptor currentMatrices;
         SoundEffect bgSound;
+        BasicEffect globalEffect;
         Vector3 cameraPos;
         float leftRightRot, upDownRot;
         List<MetaModel> modelsToDraw;
+        List<TexturedPlane> oceanTiles;
         RasterizerState rState;
         GraphicsDevice gDevice;
         #endregion
@@ -44,6 +46,7 @@ namespace Fog_Project
             #endregion
             #region Scenery
             modelsToDraw = new List<MetaModel>();
+            oceanTiles = new List<TexturedPlane>();
             cameraPos = new Vector3(0.0f, 1.0f, 3.0f);
 
             rState = new RasterizerState();
@@ -72,6 +75,14 @@ namespace Fog_Project
             menuItems.Add(quit);
             #endregion
             #region Scenery
+            globalEffect = new BasicEffect(gDevice);
+            globalEffect.FogEnabled = true;
+            globalEffect.FogColor = Color.LightCyan.ToVector3();
+            globalEffect.FogStart = 1.0f;
+            globalEffect.FogEnd = 5.0f;
+
+            globalEffect.EnableDefaultLighting();
+            globalEffect.TextureEnabled = true;
             MetaModel junction = new MetaModel();
             junction.model = gManager.Load<Model>("Models/Junctions/junctionT");
             junction.Position = Vector3.Zero;
@@ -102,6 +113,13 @@ namespace Fog_Project
             benchTwo.Rotation = Vector3.Zero;
             benchTwo.Texture = gManager.Load<Texture2D>("Textures/Giblies/bench");
 
+            TexturedPlane test = ModelUtil.CreateTexturedPlane(new Vector3(0, -0.5f, 0),
+                new Vector2(10.0f),
+                gManager.Load<Texture2D>("Textures/Ocean/ocean"),
+                gDevice);
+
+            oceanTiles.Add(test);
+
             modelsToDraw.Add(junction);
             modelsToDraw.Add(singleLeft);
             modelsToDraw.Add(singleRight);
@@ -111,6 +129,9 @@ namespace Fog_Project
             UpdateViewMatrix();
             currentMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f), gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
             currentMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
+            globalEffect.View = currentMatrices.view;
+            globalEffect.Projection = currentMatrices.proj;
+            globalEffect.World = currentMatrices.world;
             #endregion
         }
 
@@ -169,7 +190,12 @@ namespace Fog_Project
             // Draw the scenery:
             foreach (MetaModel mModel in modelsToDraw)
             {
-                ModelUtil.DrawModel(mModel, currentMatrices);
+                ModelUtil.DrawModel(mModel, globalEffect);
+            }
+
+            foreach (TexturedPlane tPlane in oceanTiles)
+            {
+                ModelUtil.DrawTexturedPlane(tPlane, globalEffect);
             }
 
             // Draw the title of the menu:
