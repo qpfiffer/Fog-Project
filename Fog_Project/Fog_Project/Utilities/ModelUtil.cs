@@ -37,6 +37,27 @@ namespace Fog_Project.Utilities
 
     public static class ModelUtil
     {
+        /// <summary>
+        /// Updates the view matrix given a camera's rotation and position.
+        /// </summary>
+        /// <param name="upDownRot">Up down rotation.</param>
+        /// <param name="leftRightRot">Left and right rotation</param>
+        /// <param name="cameraPos">Position of the camera</param>
+        /// <param name="currentMatrices">The matrix descriptor containing the Workd, View and Projection matrices you want to use.</param>
+        public static void UpdateViewMatrix(float upDownRot, float leftRightRot, ref Vector3 cameraPos, ref MatrixDescriptor currentMatrices)
+        {
+            Matrix cameraRotation = Matrix.CreateRotationX(upDownRot) * Matrix.CreateRotationY(leftRightRot);
+
+            Vector3 cameraOriginalTarget = new Vector3(0, 0, -1);
+            Vector3 cameraRotatedTarget = Vector3.Transform(cameraOriginalTarget, cameraRotation);
+            Vector3 cameraFinalTarget = cameraPos + cameraRotatedTarget;
+
+            Vector3 cameraOriginalUpVector = new Vector3(0, 1, 0);
+            Vector3 cameraRotatedUpVector = Vector3.Transform(cameraOriginalUpVector, cameraRotation);
+
+            currentMatrices.view = Matrix.CreateLookAt(cameraPos, cameraFinalTarget, cameraRotatedUpVector);
+        }
+
         public static void DrawModel(MetaModel m, BasicEffect globalEffect)
         {
             Matrix[] transforms = new Matrix[m.model.Bones.Count];

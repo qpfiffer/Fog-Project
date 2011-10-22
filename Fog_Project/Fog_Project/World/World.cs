@@ -13,6 +13,14 @@ namespace Fog_Project.World
 {
     class World: IInputHandler
     {
+        #region Player
+        Player mainPlayer;
+        #endregion
+        public World()
+        {
+            mainPlayer = new Player();
+        }
+
         public void handleInput(ref InputInfo info)
         {
         }
