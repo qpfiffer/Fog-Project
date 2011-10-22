@@ -12,10 +12,23 @@ namespace Fog_Project
 {
     class Player
     {
-        MatrixDescriptor matrices;
+        #region Properties
+        private Vector3 position;
+
+        /// <summary>
+        /// The current position of the player, and therefor the camera.
+        /// </summary>
+        public Vector3 Position
+        {
+            get
+            {
+                return position;
+            }
+        }
+        #endregion
         public Player()
         {
-            matrices = new MatrixDescriptor();
+            position = Vector3.Zero;
         }
     }
 }
