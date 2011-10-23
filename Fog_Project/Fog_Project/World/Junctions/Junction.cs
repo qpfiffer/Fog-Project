@@ -16,6 +16,7 @@ namespace Fog_Project.World
     {
         #region Fields
         private Vector3 position;
+        private Vector3 rotation;
         private MetaModel model;
         private BasicEffect material;
         #endregion
@@ -25,28 +26,34 @@ namespace Fog_Project.World
         {
             get { return position; }
         }
+
+        public Vector3 Rotation
+        {
+            get { return rotation; }
+        }
         #endregion
 
-        public Junction(Vector3 position)
+        public Junction(Vector3 position, Vector3 rotation)
         {
             this.position = position;
+            this.rotation = rotation;
         }
 
-        /// <summary>
-        /// This function will be overridden in child classes because they need
-        /// to load their own models and textures and whatnot.
-        /// </summary>
-        /// <param name="gManager"></param>
-        public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
+        public void Load(ContentManager gManager, GraphicsDevice gDevice, string modelName)
         {
             material = ModelUtil.CreateGlobalEffect(gDevice);
+            model = new MetaModel();
+            model.Rotation = rotation;
+            model.Position = position;
+            model.model = gManager.Load<Model>("Models/Junctions/" + modelName);
+            model.Texture = gManager.Load<Texture2D>("Textures/Junctions/" + modelName);
         }
 
-        public virtual void Update(GameTime gTime)
+        public void Update(GameTime gTime)
         {
         }
 
-        public virtual void Draw(GraphicsDevice gDevice)
+        public void Draw(GraphicsDevice gDevice)
         {        
             ModelUtil.DrawModel(model, material);
         }
