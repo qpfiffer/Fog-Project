@@ -132,7 +132,7 @@ namespace Fog_Project
             modelsToDraw.Add(bench);
             modelsToDraw.Add(benchTwo);
 
-            UpdateViewMatrix();
+            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, ref cameraPos, ref currentMatrices);
             currentMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f), gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
             currentMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
             globalEffect.View = currentMatrices.view;
