@@ -32,13 +32,22 @@ namespace Fog_Project.World
             this.position = position;
         }
 
-        public virtual void Load(ContentManager gManager)
+        /// <summary>
+        /// This function will be overridden in child classes because they need
+        /// to load their own models and textures and whatnot.
+        /// </summary>
+        /// <param name="gManager"></param>
+        public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
-            throw new Exception("Do not call this function directly!");
+            material = ModelUtil.CreateGlobalEffect(gDevice);
         }
 
-        public void Draw(GraphicsDevice gDevice)
+        public virtual void Update(GameTime gTime)
         {
+        }
+
+        public virtual void Draw(GraphicsDevice gDevice)
+        {        
             ModelUtil.DrawModel(model, material);
         }
     }

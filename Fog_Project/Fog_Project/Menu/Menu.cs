@@ -61,6 +61,9 @@ namespace Fog_Project
 
         public void Load(ContentManager gManager)
         {
+            #region Basic_Effect
+            globalEffect = ModelUtil.CreateGlobalEffect(gDevice);
+            #endregion
             #region Menu_Stuff
             mFont = gManager.Load<SpriteFont>("Fonts/mainFont");
 
@@ -75,14 +78,6 @@ namespace Fog_Project
             menuItems.Add(quit);
             #endregion
             #region Scenery
-            globalEffect = new BasicEffect(gDevice);
-            globalEffect.FogEnabled = true;
-            globalEffect.FogColor = Color.LightCyan.ToVector3();
-            globalEffect.FogStart = 1.0f;
-            globalEffect.FogEnd = 7.0f;
-
-            globalEffect.EnableDefaultLighting();
-            globalEffect.TextureEnabled = true;
             MetaModel junction = new MetaModel();
             junction.model = gManager.Load<Model>("Models/Junctions/junctionT");
             junction.Position = Vector3.Zero;

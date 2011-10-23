@@ -58,6 +58,19 @@ namespace Fog_Project.Utilities
             currentMatrices.view = Matrix.CreateLookAt(cameraPos, cameraFinalTarget, cameraRotatedUpVector);
         }
 
+        public static BasicEffect CreateGlobalEffect(GraphicsDevice gDevice)
+        {
+            BasicEffect globalEffect = new BasicEffect(gDevice);
+            globalEffect.FogEnabled = true;
+            globalEffect.FogColor = Color.LightCyan.ToVector3();
+            globalEffect.FogStart = 1.0f;
+            globalEffect.FogEnd = 7.0f;
+
+            globalEffect.EnableDefaultLighting();
+            globalEffect.TextureEnabled = true;
+            return globalEffect;
+        }
+
         public static void DrawModel(MetaModel m, BasicEffect globalEffect)
         {
             Matrix[] transforms = new Matrix[m.model.Bones.Count];
