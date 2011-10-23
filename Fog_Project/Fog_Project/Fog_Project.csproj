@@ -118,6 +118,7 @@
     <Compile Include="Main\Game1.cs" />
     <Compile Include="Utilities\ModelUtil.cs" />
     <Compile Include="Utilities\RandomStructsBaby.cs" />
+    <Compile Include="World\Junctions\Junction.cs" />
     <Compile Include="World\World.cs" />
   </ItemGroup>
   <ItemGroup>

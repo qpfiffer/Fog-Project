@@ -57,8 +57,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Junctions\junction_T.png">
-      <Name>junction_T</Name>
+    <Compile Include="Textures\Junctions\junctionT.png">
+      <Name>junctionT</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
