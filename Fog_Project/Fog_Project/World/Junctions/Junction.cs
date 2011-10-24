@@ -19,6 +19,7 @@ namespace Fog_Project.World
         private Vector3 rotation;
         private MetaModel model;
         private BasicEffect material;
+        private Dictionary<BoundingBox, Junction> exits;
         #endregion
 
         #region Properties
