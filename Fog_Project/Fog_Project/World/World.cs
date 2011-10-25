@@ -15,14 +15,38 @@ namespace Fog_Project.World
     {
         #region Player
         Player mainPlayer;
+        GraphicsDevice gDevice;
         #endregion
         public World()
         {
             mainPlayer = new Player();
         }
 
+        public void Load(ContentManager gManager, GraphicsDevice gDevice)
+        {
+            this.gDevice = gDevice;
+        }
+
         public void handleInput(ref InputInfo info)
         {
+            if (info.curKBDState.IsKeyDown(Keys.E) &&
+                info.oldKBDState.IsKeyUp(Keys.E))
+            {
+                // Reserved for interacting with objects
+            }
+
+            if (info.curKBDState.IsKeyDown(Keys.W) &&
+                info.oldKBDState.IsKeyUp(Keys.W))
+            {
+            }
+
+            if (info.curMouseState != info.oldMouseState)
+            {
+                float xDelta = info.curMouseState.X - info.oldMouseState.X;
+                float yDelta = info.curMouseState.Y - info.oldMouseState.Y;
+
+                Mouse.SetPosition(gDevice.Viewport.Width / 2, gDevice.Viewport.Height / 2);
+            }
         }
     }
 }
