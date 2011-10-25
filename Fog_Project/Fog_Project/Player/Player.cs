@@ -33,6 +33,15 @@ namespace Fog_Project
         }
 
         /// <summary>
+        /// Controls whether noclip is enabled or not.
+        /// </summary>
+        public bool NoClip
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the current matrices that this instance of player is using.
         /// </summary>
         public MatrixDescriptor Matrices
@@ -55,7 +64,7 @@ namespace Fog_Project
             matrices = new MatrixDescriptor();
         }
 
-        public void rotateCamera(Point mouseDifference, float amount)
+        public void rotateCamera(ref Point mouseDifference, float amount)
         {
             leftRightRot -= rotationSpeed * mouseDifference.X * amount;
             if (leftRightRot > (2 * Math.PI))
@@ -73,6 +82,30 @@ namespace Fog_Project
             {
                 upDownRot = upDownTemp;
             }
+        }
+
+        public void addToCameraPosition(ref Vector3 toAdd)
+        {
+            Vector3 oldPosition = position;
+            Matrix cameraRotation = Matrix.Identity;
+            if (NoClip)
+            {
+                cameraRotation = Matrix.CreateRotationX(upDownRot) * Matrix.CreateRotationY(leftRightRot);
+            }
+            else
+            {
+                // We don't move in the direction we're looking if we are looking up. Discard the upDown
+                // rotation.
+                cameraRotation = Matrix.CreateRotationX(0.0f) * Matrix.CreateRotationY(leftRightRot);
+            }
+
+            Vector3 rotatedVector = Vector3.Transform(toAdd, cameraRotation);
+            oldPosition += moveSpeed * rotatedVector;
+
+            // DO COLLISION HERE
+
+            position = oldPosition;
+            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, ref position, ref matrices);
         }
     }
 }
