@@ -7,31 +7,16 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Fog_Project.Utilities;
+using Fog_Project.World;
 
 namespace Fog_Project
 {
-    class Player
+    class Player: GameObject
     {
         #region Fields
-        private BoundingSphere BBoxFloor;
-        private BoundingSphere BBoxChest;
-        private Vector3 position;
         private MatrixDescriptor matrices;
-        private float leftRightRot;
-        private float upDownRot;
         #endregion
         #region Properties
-        /// <summary>
-        /// The current position of the player, and therefor the camera.
-        /// </summary>
-        public Vector3 Position
-        {
-            get
-            {
-                return position;
-            }
-        }
-
         /// <summary>
         /// Controls whether noclip is enabled or not.
         /// </summary>
@@ -60,7 +45,11 @@ namespace Fog_Project
 
         public Player()
         {
-            position = Vector3.Zero;
+            matrices = new MatrixDescriptor();
+        }
+
+        public Player(ref Vector3 position, ref Vector2 rotation)
+        {
             matrices = new MatrixDescriptor();
         }
 

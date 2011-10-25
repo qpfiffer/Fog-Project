@@ -12,40 +12,26 @@ namespace Fog_Project.World
     /// <summary>
     /// The class all junction pieces inherit from.
     /// </summary>
-    class Junction
+    class Junction: GameObject
     {
         #region Fields
-        private Vector3 position;
-        private Vector3 rotation;
-        private MetaModel model;
-        private BasicEffect material;
         private Dictionary<BoundingBox, Junction> exits;
         #endregion
 
         #region Properties
-        public Vector3 Position
-        {
-            get { return position; }
-        }
-
-        public Vector3 Rotation
-        {
-            get { return rotation; }
-        }
         #endregion
-
-        public Junction(Vector3 position, Vector3 rotation)
-        {
-            this.position = position;
-            this.rotation = rotation;
-        }
-
         public void Load(ContentManager gManager, GraphicsDevice gDevice, string modelName)
         {
+            // If we created this junction using the wrong constructor our rotations will be
+            // all sorts of fucked up.
+            if (this.leftRightRot != 0.0f && this.upDownRot != 0.0f)
+            {
+                throw new Exception("This junction created using the wrong constructor!");
+            }
+
             material = ModelUtil.CreateGlobalEffect(gDevice);
             model = new MetaModel();
-            model.Rotation = rotation;
-            model.Position = position;
+            // Rotation and Position of a model are set in the constructor. Hopefully.
             model.model = gManager.Load<Model>("Models/Junctions/" + modelName);
             model.Texture = gManager.Load<Texture2D>("Textures/Junctions/" + modelName);
         }
