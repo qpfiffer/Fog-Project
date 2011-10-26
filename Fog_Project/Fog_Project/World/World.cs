@@ -27,6 +27,13 @@ namespace Fog_Project.World
             this.gDevice = gDevice;
         }
 
+        private void collidMove(float amount, Vector3 moveVector)
+        {
+            // Collisions will go here eventually.
+            Vector3 finalVector = moveVector * amount;
+            mainPlayer.addToCameraPosition(ref finalVector);
+        }
+
         public void handleInput(ref InputInfo info)
         {
             if (info.curKBDState.IsKeyDown(Keys.E) &&
@@ -46,6 +53,30 @@ namespace Fog_Project.World
                 float yDelta = info.curMouseState.Y - info.oldMouseState.Y;
 
                 Mouse.SetPosition(gDevice.Viewport.Width / 2, gDevice.Viewport.Height / 2);
+            }
+
+            Vector3 moveVector = Vector3.Zero;
+            if (info.curKBDState.IsKeyDown(Keys.W))
+            {
+                moveVector.Z -= 1;
+            } 
+            else if (info.curKBDState.IsKeyDown(Keys.S)) 
+            {
+                moveVector.Z += 1;
+            }
+
+            if (info.curKBDState.IsKeyDown(Keys.A))
+            {
+                moveVector.X += 1;
+            }
+            else if (info.curKBDState.IsKeyUp(Keys.D))
+            {
+                moveVector.X -= 1;
+            }
+
+            if (moveVector != Vector3.Zero)
+            {
+                collideMove(amount, moveVector);
             }
         }
     }
