@@ -16,6 +16,8 @@ namespace Fog_Project.Utilities
 
         public MouseState oldMouseState;
         public MouseState curMouseState;
+
+        public float timeDifference;
     }
 
     public struct InputInfoXbox

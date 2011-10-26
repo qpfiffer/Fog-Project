@@ -53,9 +53,9 @@ namespace Fog_Project
             matrices = new MatrixDescriptor();
         }
 
-        public void rotateCamera(ref Point mouseDifference, float amount)
+        public void rotateCamera(ref Point mouseDifference, float timeDifference)
         {
-            leftRightRot -= rotationSpeed * mouseDifference.X * amount;
+            leftRightRot -= rotationSpeed * mouseDifference.X * timeDifference;
             if (leftRightRot > (2 * Math.PI))
             {
                 leftRightRot -= (float)(2 * Math.PI);
@@ -65,7 +65,7 @@ namespace Fog_Project
                 leftRightRot += (float)(2 * Math.PI);
             }
 
-            float upDownTemp = upDownRot - (rotationSpeed * mouseDifference.Y * amount);
+            float upDownTemp = upDownRot - (rotationSpeed * mouseDifference.Y * timeDifference);
             if (upDownTemp < rightAngleRadians &&
                 upDownTemp > -rightAngleRadians)
             {

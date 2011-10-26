@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Fog_Project.Utilities;
+using Fog_Project.World;
 
 namespace Fog_Project
 {
@@ -39,6 +40,10 @@ namespace Fog_Project
 
         #region MENU
         Menu mainMenu;
+        #endregion
+
+        #region WORLD
+        World.World mWorld;
         #endregion
 
         #region FONTS
@@ -100,6 +105,7 @@ namespace Fog_Project
             #region INPUT_UPDATE
             inputInfo.curKBDState = Keyboard.GetState();
             inputInfo.curMouseState = Mouse.GetState();
+            inputInfo.timeDifference = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             #endregion
 
             // Allows the game to exit
@@ -119,6 +125,8 @@ namespace Fog_Project
                 case GameState.loading:
                     break;
                 case GameState.game:
+                    mWorld.handleInput(ref inputInfo);
+                    mWorld.Update(gameTime);
                     break;
             }
 

@@ -29,6 +29,8 @@ namespace Fog_Project.World
                 throw new Exception("This junction created using the wrong constructor!");
             }
 
+            exits = new Dictionary<BoundingBox, Junction>();
+
             material = ModelUtil.CreateGlobalEffect(gDevice);
             model = new MetaModel();
             // Rotation and Position of a model are set in the constructor. Hopefully.
@@ -36,8 +38,9 @@ namespace Fog_Project.World
             model.Texture = gManager.Load<Texture2D>("Textures/Junctions/" + modelName);
         }
 
-        public void Update(GameTime gTime)
+        public override void Update(GameTime gTime)
         {
+            base.Update(gTime);
         }
 
         public void Draw(GraphicsDevice gDevice)

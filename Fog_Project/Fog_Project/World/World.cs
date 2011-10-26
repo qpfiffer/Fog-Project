@@ -27,11 +27,15 @@ namespace Fog_Project.World
             this.gDevice = gDevice;
         }
 
-        private void collidMove(float amount, Vector3 moveVector)
+        private void collideMove(float amount, Vector3 moveVector)
         {
             // Collisions will go here eventually.
             Vector3 finalVector = moveVector * amount;
             mainPlayer.addToCameraPosition(ref finalVector);
+        }
+
+        public void Update(GameTime gTime)
+        {
         }
 
         public void handleInput(ref InputInfo info)
@@ -40,11 +44,6 @@ namespace Fog_Project.World
                 info.oldKBDState.IsKeyUp(Keys.E))
             {
                 // Reserved for interacting with objects
-            }
-
-            if (info.curKBDState.IsKeyDown(Keys.W) &&
-                info.oldKBDState.IsKeyUp(Keys.W))
-            {
             }
 
             if (info.curMouseState != info.oldMouseState)
@@ -76,7 +75,7 @@ namespace Fog_Project.World
 
             if (moveVector != Vector3.Zero)
             {
-                collideMove(amount, moveVector);
+                collideMove(info.timeDifference, moveVector);
             }
         }
     }
