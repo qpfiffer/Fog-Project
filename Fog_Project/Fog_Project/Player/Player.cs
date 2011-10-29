@@ -32,6 +32,7 @@ namespace Fog_Project
         public MatrixDescriptor Matrices
         {
             get { return matrices; }
+            set { matrices = value; }
         }
         #endregion
         #region Constants
@@ -94,7 +95,7 @@ namespace Fog_Project
             // DO COLLISION HERE
 
             position = oldPosition;
-            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, ref position, ref matrices);
+            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Fog_Project.World
 
             Junction test = new Junction();
             test.Load(gManager, gDevice, "junctionT");
-            test.Position = Vector3.Zero;
+            test.Position = new Vector3(0, 0, 2.0f);
             junctions.Add(test);
         }
 
@@ -74,6 +74,9 @@ namespace Fog_Project.World
                 mainPlayer.rotateCamera(ref deltas, info.timeDifference);
 
                 Mouse.SetPosition(gDevice.Viewport.Width / 2, gDevice.Viewport.Height / 2);
+                MatrixDescriptor cMatrices = mainPlayer.Matrices;
+                ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position, ref cMatrices);
+                mainPlayer.Matrices = cMatrices;
             }
 
             Vector3 moveVector = Vector3.Zero;
