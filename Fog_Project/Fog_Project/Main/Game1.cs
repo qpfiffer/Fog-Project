@@ -100,6 +100,14 @@ namespace Fog_Project
         {
         }
 
+        private void loadWorld()
+        {
+            gameState = GameState.loading;
+            this.mWorld = new World.World();
+            mWorld.Load(Content, GraphicsDevice);
+            gameState = GameState.game;
+        }
+
         protected override void Update(GameTime gameTime)
         {
             #region INPUT_UPDATE
@@ -120,6 +128,8 @@ namespace Fog_Project
 
                     if (mainMenu.Flag == MenuFlags.quit)
                         this.Exit();
+                    else if (mainMenu.Flag == MenuFlags.startGame)
+                        loadWorld();
 
                     break;
                 case GameState.loading:
@@ -147,9 +157,23 @@ namespace Fog_Project
                 case GameState.menu:
                     mainMenu.Draw(spriteBatch);
                     break;
-                case GameState.loading:
+                case GameState.loading:                   
+                    spriteBatch.Begin();
+                    Vector2 stringSize = mainFont.MeasureString("Loading...");
+                    spriteBatch.DrawString(mainFont, "Loading...", new Vector2(GraphicsDevice.Viewport.Width / 2 - stringSize.X,
+                        GraphicsDevice.Viewport.Height / 2 - stringSize.Y), Color.Black);
+                    spriteBatch.End();
                     break;
                 case GameState.game:
+#if DEBUG
+                    spriteBatch.Begin();
+                    spriteBatch.DrawString(mainFont, "LR Rot: " + mWorld.MPlayer.LeftRightRot, new Vector2(1, 0), Color.Black);
+                    spriteBatch.DrawString(mainFont, "UD Rot: " + mWorld.MPlayer.UpDownRot, new Vector2(1, 20), Color.Black);
+                    spriteBatch.DrawString(mainFont, " X Pos: " + mWorld.MPlayer.Position.X, new Vector2(1, 40), Color.Black);
+                    spriteBatch.DrawString(mainFont, " Z Pos: " + mWorld.MPlayer.Position.Z, new Vector2(1, 60), Color.Black);
+                    spriteBatch.End();
+#endif
+                    mWorld.Draw();
                     break;
             }
 

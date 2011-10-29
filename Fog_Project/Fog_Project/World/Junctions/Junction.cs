@@ -43,6 +43,13 @@ namespace Fog_Project.World
             base.Update(gTime);
         }
 
+        public void updateMatrices(MatrixDescriptor currentMatrices)
+        {
+            this.material.View = currentMatrices.view;
+            this.material.World = currentMatrices.world;
+            this.material.Projection = currentMatrices.proj;
+        }
+
         public void Draw(GraphicsDevice gDevice)
         {        
             ModelUtil.DrawModel(model, material);

@@ -21,7 +21,12 @@ namespace Fog_Project.World
         #region Properties
         public Vector3 Position 
         { 
-            get { return position; } 
+            get { return position; }
+            set
+            {
+                model.Position = value;
+                this.position = value;
+            }
         }
         public List<BoundingSphere> BoundingSpheres
         {

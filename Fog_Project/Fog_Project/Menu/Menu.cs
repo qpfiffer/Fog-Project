@@ -82,7 +82,7 @@ namespace Fog_Project
             junction.model = gManager.Load<Model>("Models/Junctions/junctionT");
             junction.Position = Vector3.Zero;
             junction.Rotation = Vector3.Zero;
-            junction.Texture = gManager.Load<Texture2D>("Textures/Junctions/junction_T");
+            junction.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionT");
 
             MetaModel singleLeft = new MetaModel();
             singleLeft.model = gManager.Load<Model>("Models/Junctions/junctionSingle");
