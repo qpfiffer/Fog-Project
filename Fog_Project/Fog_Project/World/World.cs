@@ -22,6 +22,7 @@ namespace Fog_Project.World
         ContentManager gManager;
         GraphicsDevice gDevice;
         BasicEffect globalEffect;
+        RasterizerState rState;
         #endregion
 
         #region World
@@ -32,6 +33,12 @@ namespace Fog_Project.World
         {
             Vector3 playerPos = new Vector3(0,1.0f,3.0f);
             Vector2 playerRot = new Vector2(0.0f, 0.0f);
+
+            rState = new RasterizerState();
+            rState.FillMode = FillMode.Solid;
+            rState.CullMode = CullMode.CullCounterClockwiseFace;
+            rState.ScissorTestEnable = true;
+
             mainPlayer = new Player(ref playerPos, ref playerRot);
             junctions = new List<Junction>();
             modelsToDraw = new List<MetaModel>();
@@ -54,6 +61,16 @@ namespace Fog_Project.World
             metaJunction.Rotation = Vector3.Zero;
             metaJunction.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionT");
             modelsToDraw.Add(metaJunction);
+
+            MatrixDescriptor cMatrices = mainPlayer.Matrices;
+            ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position, ref cMatrices);
+            cMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f),
+                gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
+            cMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
+            globalEffect.View = cMatrices.view;
+            globalEffect.World= cMatrices.world;
+            globalEffect.Projection= cMatrices.proj;
+            mainPlayer.Matrices = cMatrices;
         }
 
         private void collideMove(float amount, Vector3 moveVector)
@@ -119,6 +136,10 @@ namespace Fog_Project.World
 
         public void Draw()
         {
+            gDevice.DepthStencilState = DepthStencilState.Default;
+            gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.LightCyan, 1.0f, 0);
+            gDevice.RasterizerState = rState;
+
             foreach (Junction junction in junctions)
             {
                 junction.updateMatrices(mainPlayer.Matrices);
