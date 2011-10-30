@@ -16,34 +16,44 @@ namespace Fog_Project.World
         #region Player
         Player mainPlayer;
         public Player MPlayer { get { return mainPlayer; } }
-  
         #endregion
 
         #region GameStuff
         ContentManager gManager;
         GraphicsDevice gDevice;
+        BasicEffect globalEffect;
         #endregion
 
         #region World
         List<Junction> junctions;
+        List<MetaModel> modelsToDraw;
         #endregion
         public World()
         {
-            Vector3 playerPos = new Vector3(0,0,1.0f);
+            Vector3 playerPos = new Vector3(0,1.0f,3.0f);
             Vector2 playerRot = new Vector2(0.0f, 0.0f);
             mainPlayer = new Player(ref playerPos, ref playerRot);
             junctions = new List<Junction>();
+            modelsToDraw = new List<MetaModel>();
         }
 
         public void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
             this.gDevice = gDevice;
             this.gManager = gManager;
+            globalEffect = ModelUtil.CreateGlobalEffect(gDevice);
 
             Junction test = new Junction();
             test.Load(gManager, gDevice, "junctionT");
             test.Position = new Vector3(0, 0, 2.0f);
             junctions.Add(test);
+
+            MetaModel metaJunction = new MetaModel();
+            metaJunction.model = gManager.Load<Model>("Models/Junctions/junctionT");
+            metaJunction.Position = new Vector3(0.0f, 0.0f, -0.5f);
+            metaJunction.Rotation = Vector3.Zero;
+            metaJunction.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionT");
+            modelsToDraw.Add(metaJunction);
         }
 
         private void collideMove(float amount, Vector3 moveVector)
@@ -55,6 +65,9 @@ namespace Fog_Project.World
 
         public void Update(GameTime gTime)
         {
+            globalEffect.View = mainPlayer.Matrices.view;
+            globalEffect.World = mainPlayer.Matrices.world;
+            globalEffect.Projection = mainPlayer.Matrices.proj;
         }
 
         public void handleInput(ref InputInfo info)
@@ -110,6 +123,11 @@ namespace Fog_Project.World
             {
                 junction.updateMatrices(mainPlayer.Matrices);
                 junction.Draw(gDevice);
+            }
+
+            foreach (MetaModel model in modelsToDraw)
+            {
+                ModelUtil.DrawModel(model, globalEffect);
             }
         }
     }

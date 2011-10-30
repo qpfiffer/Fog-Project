@@ -49,7 +49,7 @@ namespace Fog_Project
             matrices = new MatrixDescriptor();
         }
 
-        public Player(ref Vector3 position, ref Vector2 rotation)
+        public Player(ref Vector3 position, ref Vector2 rotation):base(ref position, ref rotation)
         {
             matrices = new MatrixDescriptor();
         }
