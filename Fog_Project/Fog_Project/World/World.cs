@@ -105,7 +105,8 @@ namespace Fog_Project.World
 
                 Mouse.SetPosition(gDevice.Viewport.Width / 2, gDevice.Viewport.Height / 2);
                 MatrixDescriptor cMatrices = mainPlayer.Matrices;
-                ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position, ref cMatrices);
+                ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot,
+                    mainPlayer.Position, ref cMatrices);
                 mainPlayer.Matrices = cMatrices;
             }
 

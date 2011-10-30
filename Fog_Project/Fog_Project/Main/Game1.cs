@@ -103,6 +103,8 @@ namespace Fog_Project
         private void loadWorld()
         {
             gameState = GameState.loading;
+            Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            inputInfo.oldMouseState = Mouse.GetState();
             this.mWorld = new World.World();
             mWorld.Load(Content, GraphicsDevice);
             gameState = GameState.game;
@@ -141,7 +143,8 @@ namespace Fog_Project
             }
 
             #region INPUT_UPDATE
-            inputInfo.oldMouseState = inputInfo.curMouseState;
+            // Do not update the mouse state. The one we have here is the center of the screen.
+            //inputInfo.oldMouseState = inputInfo.curMouseState;
             inputInfo.oldKBDState = inputInfo.curKBDState;
             #endregion
 
@@ -165,6 +168,7 @@ namespace Fog_Project
                     spriteBatch.End();
                     break;
                 case GameState.game:
+                    mWorld.Draw();
 #if DEBUG
                     spriteBatch.Begin();
                     spriteBatch.DrawString(mainFont, "LR Rot: " + mWorld.MPlayer.LeftRightRot, new Vector2(1, 0), Color.Black);
@@ -173,7 +177,6 @@ namespace Fog_Project
                     spriteBatch.DrawString(mainFont, " Z Pos: " + mWorld.MPlayer.Position.Z, new Vector2(1, 60), Color.Black);
                     spriteBatch.End();
 #endif
-                    mWorld.Draw();
                     break;
             }
 
