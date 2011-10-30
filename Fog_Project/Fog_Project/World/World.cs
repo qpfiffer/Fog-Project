@@ -121,11 +121,11 @@ namespace Fog_Project.World
 
             if (info.curKBDState.IsKeyDown(Keys.A))
             {
-                moveVector.X += 1;
+                moveVector.X -= 1;
             }
             else if (info.curKBDState.IsKeyDown(Keys.D))
             {
-                moveVector.X -= 1;
+                moveVector.X += 1;
             }
 
             if (moveVector != Vector3.Zero)
@@ -146,10 +146,10 @@ namespace Fog_Project.World
                 junction.Draw(gDevice);
             }
 
-            foreach (MetaModel model in modelsToDraw)
-            {
-                ModelUtil.DrawModel(model, globalEffect);
-            }
+            //foreach (MetaModel model in modelsToDraw)
+            //{
+            //    ModelUtil.DrawModel(model, globalEffect);
+            //}
         }
     }
 }
