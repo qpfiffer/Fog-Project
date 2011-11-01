@@ -26,7 +26,13 @@ namespace Fog_Project.World
         #endregion
 
         #region World
+        // These are the "intelligent" pieces that lead 
+        // to other junction pieces via portals, kinda:
         List<Junction> junctions;
+        // Junction connections will be straight lines 
+        // connecting junction pieces to eachother:
+        List<List<MetaModel>> junctionConnections;
+        // Any random models that are needed:
         List<MetaModel> modelsToDraw;
         #endregion
         public World()
@@ -41,20 +47,83 @@ namespace Fog_Project.World
 
             mainPlayer = new Player(ref playerPos, ref playerRot);
             junctions = new List<Junction>();
+            junctionConnections = new List<List<MetaModel>>();
             modelsToDraw = new List<MetaModel>();
         }
 
         public void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
             this.gDevice = gDevice;
-            this.gManager = gManager;
+            this.gManager = gManager;                    
+
+            #region SetupJunctions
+            // Explained more indepth in the function:
+            createJunctionConnections(gManager);
+
+
+            Random tRandom = new Random();
+            int randomJunctionNum = tRandom.Next(5,10);
+            for (int i = 0; i < randomJunctionNum; i++)
+            {
+                const int X_JUNCTION_RANGE = 10;
+                const int Y_JUNCTION_RANGE = 10;
+
+                // This little gem here gets the number of different types in an 
+                // enum:
+                int enumCount = Enum.GetValues(typeof(JunctionType)).Length;
+                // Pick a random one:
+                int newJunctionType = tRandom.Next(enumCount);
+                // Create a new junction, the info if which we will fill out
+                // in a second:
+                Junction newJunction = new Junction();
+
+                switch (newJunctionType) 
+                {
+                    // Single:
+                    case 0:
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Type = JunctionType.single;
+                        newJunction.Load(gManager, gDevice, "junctionSingle");                    
+                        junctions.Add(newJunction);
+                        break;
+                    // Corner:
+                    case 1:
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Type = JunctionType.triple;
+                        newJunction.Load(gManager, gDevice, "junctionT");
+                        junctions.Add(newJunction);
+                        break;
+                    // Triple:
+                    case 2:
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Type = JunctionType.triple;
+                        newJunction.Load(gManager, gDevice, "junctionT");
+                        junctions.Add(newJunction);
+                        break;
+                    // Quad:
+                    case 3:
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Type = JunctionType.triple;
+                        newJunction.Load(gManager, gDevice, "junctionT");
+                        junctions.Add(newJunction);
+                        break;
+                    default:
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Type = JunctionType.triple;
+                        newJunction.Load(gManager, gDevice, "junctionT");
+                        junctions.Add(newJunction);
+                        break;
+                }
+            }
+            #endregion
+            #region Setup3D
+            // Get a unified global effect from the model util thing:
             globalEffect = ModelUtil.CreateGlobalEffect(gDevice);
-
-            Junction test = new Junction();
-            test.Load(gManager, gDevice, "junctionT");
-            test.Position = new Vector3(0, 0, 2.0f);
-            junctions.Add(test);
-
             // We create a matrixDescriptor here becuase we can't set properties of properties:
             MatrixDescriptor cMatrices = mainPlayer.Matrices;
             ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position,
@@ -71,6 +140,13 @@ namespace Fog_Project.World
 
             // Finally place it where it needs to be:
             mainPlayer.Matrices = cMatrices;
+            #endregion
+        }
+
+        private void createJunctionConnections(ContentManager g)
+        {
+            // We should only ever need 4 junction pieces, which
+            // we can shuffle around at will. Good idea? Maybe.
         }
 
         private void collideMove(float amount, Vector3 moveVector)
