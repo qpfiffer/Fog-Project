@@ -30,9 +30,6 @@ namespace Fog_Project.World
         List<Junction> junctions;
         // Spawned junctions:
         List<Junction> spawnedJunctions;
-        // Junction connections will be straight lines 
-        // connecting junction pieces to eachother:
-        List<List<MetaModel>> junctionConnections;
         // Any random models that are needed:
         List<MetaModel> modelsToDraw;
         #endregion
@@ -49,7 +46,6 @@ namespace Fog_Project.World
             mainPlayer = new Player(ref playerPos, ref playerRot);
             junctions = new List<Junction>();
             spawnedJunctions = new List<Junction>();
-            junctionConnections = new List<List<MetaModel>>();
             modelsToDraw = new List<MetaModel>();
         }
 
@@ -59,10 +55,6 @@ namespace Fog_Project.World
             this.gManager = gManager;                    
 
             #region SetupJunctions
-            // Explained more indepth in the function:
-            createJunctionConnections(gManager);
-
-
             Random tRandom = new Random();
             int randomJunctionNum = tRandom.Next(5,10);
             for (int i = 0; i < randomJunctionNum; i++)
@@ -110,7 +102,7 @@ namespace Fog_Project.World
                         newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
                             0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
                         newJunction.Type = JunctionType.triple;
-                        newJunction.Load(gManager, gDevice, "junctionT");
+                        newJunction.Load(gManager, gDevice, "junctionConnection");
                         junctions.Add(newJunction);
                         break;
                     default:
@@ -143,12 +135,6 @@ namespace Fog_Project.World
             // Finally place it where it needs to be:
             mainPlayer.Matrices = cMatrices;
             #endregion
-        }
-
-        private void createJunctionConnections(ContentManager g)
-        {
-            // We should only ever need 4 junction pieces, which
-            // we can shuffle around at will. Good idea? Maybe.
         }
 
         private void collideMove(float amount, Vector3 moveVector)
