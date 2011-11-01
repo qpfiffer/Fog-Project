@@ -55,21 +55,21 @@ namespace Fog_Project.World
             test.Position = new Vector3(0, 0, 2.0f);
             junctions.Add(test);
 
-            MetaModel metaJunction = new MetaModel();
-            metaJunction.model = gManager.Load<Model>("Models/Junctions/junctionT");
-            metaJunction.Position = new Vector3(0.0f, 0.0f, -0.5f);
-            metaJunction.Rotation = Vector3.Zero;
-            metaJunction.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionT");
-            modelsToDraw.Add(metaJunction);
-
+            // We create a matrixDescriptor here becuase we can't set properties of properties:
             MatrixDescriptor cMatrices = mainPlayer.Matrices;
-            ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position, ref cMatrices);
+            ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position,
+                ref cMatrices);
+            // Set the pieces of out matrix descriptor:
             cMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f),
                 gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
             cMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
+
+            // Update the global effect:
             globalEffect.View = cMatrices.view;
             globalEffect.World= cMatrices.world;
             globalEffect.Projection= cMatrices.proj;
+
+            // Finally place it where it needs to be:
             mainPlayer.Matrices = cMatrices;
         }
 
