@@ -26,9 +26,10 @@ namespace Fog_Project.World
         #endregion
 
         #region World
-        // These are the "intelligent" pieces that lead 
-        // to other junction pieces via portals, kinda:
+        // All junctions are kept here:
         List<Junction> junctions;
+        // Spawned junctions:
+        List<Junction> spawnedJunctions;
         // Junction connections will be straight lines 
         // connecting junction pieces to eachother:
         List<List<MetaModel>> junctionConnections;
@@ -47,6 +48,7 @@ namespace Fog_Project.World
 
             mainPlayer = new Player(ref playerPos, ref playerRot);
             junctions = new List<Junction>();
+            spawnedJunctions = new List<Junction>();
             junctionConnections = new List<List<MetaModel>>();
             modelsToDraw = new List<MetaModel>();
         }

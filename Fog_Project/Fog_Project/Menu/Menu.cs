@@ -81,20 +81,20 @@ namespace Fog_Project
             MetaModel junction = new MetaModel();
             junction.model = gManager.Load<Model>("Models/Junctions/junctionT");
             junction.Position = Vector3.Zero;
-            junction.Rotation = Vector3.Zero;
-            junction.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionT");
+            junction.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
+            junction.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionAll");
 
             MetaModel singleLeft = new MetaModel();
             singleLeft.model = gManager.Load<Model>("Models/Junctions/junctionSingle");
             singleLeft.Position = new Vector3(-5.0f, 0, 0);
             singleLeft.Rotation = Vector3.Zero;
-            singleLeft.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionSingle");
+            singleLeft.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionAll");
 
             MetaModel singleRight = new MetaModel();
             singleRight.model = gManager.Load<Model>("Models/Junctions/junctionSingle");
             singleRight.Position = new Vector3(5.0f, 0, 0);
             singleRight.Rotation = Vector3.Zero;
-            singleRight.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionSingle");
+            singleRight.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionAll");
 
             MetaModel bench = new MetaModel();
             bench.model = gManager.Load<Model>("Models/Giblies/bench");

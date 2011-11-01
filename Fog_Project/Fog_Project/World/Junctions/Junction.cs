@@ -44,7 +44,8 @@ namespace Fog_Project.World
             material = ModelUtil.CreateGlobalEffect(gDevice);
             // Rotation and Position of a model are set in the constructor. Hopefully.
             model.model = gManager.Load<Model>("Models/Junctions/" + modelName);
-            model.Texture = gManager.Load<Texture2D>("Textures/Junctions/" + modelName);
+            //model.Texture = gManager.Load<Texture2D>("Textures/Junctions/" + modelName);
+            model.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionAll");
         }
 
         private void addRandomModels(ContentManager gManager)
