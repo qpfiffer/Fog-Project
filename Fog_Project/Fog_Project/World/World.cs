@@ -65,8 +65,8 @@ namespace Fog_Project.World
             int randomJunctionNum = tRandom.Next(5,10);
             for (int i = 0; i < randomJunctionNum; i++)
             {
-                const int X_JUNCTION_RANGE = 10;
-                const int Y_JUNCTION_RANGE = 10;
+                const int X_JUNCTION_RANGE = 7;
+                const int Y_JUNCTION_RANGE = 7;
 
                 // This little gem here gets the number of different types in an 
                 // enum:
@@ -81,39 +81,39 @@ namespace Fog_Project.World
                 {
                     // Single:
                     case 0:
-                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
-                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
                         newJunction.Type = JunctionType.single;
                         newJunction.Load(gManager, gDevice, "junctionSingle");                    
                         junctions.Add(newJunction);
                         break;
                     // Corner:
                     case 1:
-                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
-                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
                         newJunction.Type = JunctionType.triple;
-                        newJunction.Load(gManager, gDevice, "junctionT");
+                        newJunction.Load(gManager, gDevice, "junctionCorner");
                         junctions.Add(newJunction);
                         break;
                     // Triple:
                     case 2:
-                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
-                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
                         newJunction.Type = JunctionType.triple;
                         newJunction.Load(gManager, gDevice, "junctionT");
                         junctions.Add(newJunction);
                         break;
                     // Quad:
                     case 3:
-                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
-                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
                         newJunction.Type = JunctionType.triple;
                         newJunction.Load(gManager, gDevice, "junctionT");
                         junctions.Add(newJunction);
                         break;
                     default:
-                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE),
-                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE));
+                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
+                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
                         newJunction.Type = JunctionType.triple;
                         newJunction.Load(gManager, gDevice, "junctionT");
                         junctions.Add(newJunction);
