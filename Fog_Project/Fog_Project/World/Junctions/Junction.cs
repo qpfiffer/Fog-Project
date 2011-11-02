@@ -30,7 +30,7 @@ namespace Fog_Project.World
         {
         }
 
-        public void Load(ContentManager gManager, GraphicsDevice gDevice, string modelName)
+        public void Load(ContentManager gManager, string modelName)
         {
             // If we created this junction using the wrong constructor our rotations will be
             // all sorts of fucked up.

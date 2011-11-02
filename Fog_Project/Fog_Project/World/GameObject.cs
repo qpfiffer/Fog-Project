@@ -72,6 +72,7 @@ namespace Fog_Project.World
         public GameObject(ref Vector3 position, ref Vector2 rotation, GraphicsDevice gDevice)
         {
             this.position = position;
+            this.gDevice = gDevice;
             leftRightRot = rotation.X;
             upDownRot = rotation.Y;
             boundingSpheres = new List<BoundingSphere>();
@@ -85,6 +86,7 @@ namespace Fog_Project.World
         public GameObject(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
         {
             this.position = position;
+            this.gDevice = gDevice;
             leftRightRot = 0.0f;
             upDownRot = 0.0f;
             model = new MetaModel();

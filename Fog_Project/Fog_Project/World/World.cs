@@ -79,30 +79,30 @@ namespace Fog_Project.World
                     // Single:
                     case 0:
                         newJunction.Type = JunctionType.single;
-                        newJunction.Load(gManager, gDevice, "junctionSingle");                    
+                        newJunction.Load(gManager, "junctionSingle");                    
                         junctions.Add(newJunction);
                         break;
                     // Corner:
                     case 1:
                         newJunction.Type = JunctionType.triple;
-                        newJunction.Load(gManager, gDevice, "junctionCorner");
+                        newJunction.Load(gManager, "junctionCorner");
                         junctions.Add(newJunction);
                         break;
                     // Triple:
                     case 2:
                         newJunction.Type = JunctionType.triple;
-                        newJunction.Load(gManager, gDevice, "junctionT");
+                        newJunction.Load(gManager, "junctionT");
                         junctions.Add(newJunction);
                         break;
                     // Quad:
                     case 3:
                         newJunction.Type = JunctionType.triple;
-                        newJunction.Load(gManager, gDevice, "junctionConnection");
+                        newJunction.Load(gManager, "junctionConnection");
                         junctions.Add(newJunction);
                         break;
                     default:
                         newJunction.Type = JunctionType.triple;
-                        newJunction.Load(gManager, gDevice, "junctionT");
+                        newJunction.Load(gManager, "junctionT");
                         junctions.Add(newJunction);
                         break;
                 }

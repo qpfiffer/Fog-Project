@@ -120,6 +120,13 @@ namespace Fog_Project.Utilities
         }
         public static TexturedPlane CreateTexturedPlane(Vector3 position, Vector2 size, Texture2D texture, GraphicsDevice gDevice)
         {
+            #region gDevice_Check
+            if (gDevice == null)
+            {
+                throw new Exception("Graphics Device is null.");
+            }
+            #endregion
+
             TexturedPlane toReturn = new TexturedPlane();
             toReturn.gDevice = gDevice;
             toReturn.indices = new short[6] { 1, 2, 0, 1, 3, 2 };
