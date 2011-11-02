@@ -44,12 +44,14 @@ namespace Fog_Project
         public const float rightAngleRadians = 1.57079633f;
         #endregion
 
-        public Player()
+        public Player(GraphicsDevice gDevice):
+            base(gDevice)
         {
             matrices = new MatrixDescriptor();
         }
 
-        public Player(ref Vector3 position, ref Vector2 rotation):base(ref position, ref rotation)
+        public Player(ref Vector3 position, ref Vector2 rotation, GraphicsDevice gDevice):
+            base(ref position, ref rotation, gDevice)
         {
             matrices = new MatrixDescriptor();
         }

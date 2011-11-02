@@ -44,9 +44,11 @@ namespace Fog_Project.Utilities
         /// <param name="leftRightRot">Left and right rotation</param>
         /// <param name="cameraPos">Position of the camera</param>
         /// <param name="currentMatrices">The matrix descriptor containing the Workd, View and Projection matrices you want to use.</param>
-        public static void UpdateViewMatrix(float upDownRot, float leftRightRot, Vector3 cameraPos, ref MatrixDescriptor currentMatrices)
+        public static void UpdateViewMatrix(float upDownRot, float leftRightRot, Vector3 cameraPos,
+            ref MatrixDescriptor currentMatrices)
         {
-            Matrix cameraRotation = Matrix.CreateRotationX(upDownRot) * Matrix.CreateRotationY(leftRightRot);
+            Matrix cameraRotation = Matrix.CreateRotationX(upDownRot) *
+                Matrix.CreateRotationY(leftRightRot);
 
             Vector3 cameraOriginalTarget = new Vector3(0, 0, -1);
             Vector3 cameraRotatedTarget = Vector3.Transform(cameraOriginalTarget, cameraRotation);
@@ -55,7 +57,8 @@ namespace Fog_Project.Utilities
             Vector3 cameraOriginalUpVector = new Vector3(0, 1, 0);
             Vector3 cameraRotatedUpVector = Vector3.Transform(cameraOriginalUpVector, cameraRotation);
 
-            currentMatrices.view = Matrix.CreateLookAt(cameraPos, cameraFinalTarget, cameraRotatedUpVector);
+            currentMatrices.view = Matrix.CreateLookAt(cameraPos, cameraFinalTarget,
+                cameraRotatedUpVector);
         }
 
         public static BasicEffect CreateGlobalEffect(GraphicsDevice gDevice)
@@ -110,7 +113,8 @@ namespace Fog_Project.Utilities
                 plane.gDevice.Indices = plane.iBuffer;
                 plane.gDevice.SetVertexBuffer(plane.vBuffer);
                 pass.Apply();
-                plane.gDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, plane.vertices.Length, 0, 2);
+                plane.gDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
+                    plane.vertices.Length, 0, 2);
             }
 
         }

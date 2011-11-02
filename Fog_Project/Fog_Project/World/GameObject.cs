@@ -16,6 +16,7 @@ namespace Fog_Project.World
         protected float leftRightRot, upDownRot;
         protected MetaModel model;
         protected BasicEffect material;
+        protected GraphicsDevice gDevice;
         #endregion
 
         #region Properties
@@ -50,23 +51,25 @@ namespace Fog_Project.World
         }
         #endregion
 
+        // Commenting this out becuase it is confusing. You should be using one of the other
+        // constructors.
         /// <summary>
         /// Creates a blank game object.
         /// </summary>
-        public GameObject()
-        {
-            position = Vector3.Zero;
-            boundingSpheres = new List<BoundingSphere>();
-            leftRightRot = 0.0f;
-            upDownRot = 0.0f;
-        }
+        //public GameObject(GraphicsDevice gDevice)
+        //{
+        //    position = Vector3.Zero;
+        //    boundingSpheres = new List<BoundingSphere>();
+        //    leftRightRot = 0.0f;
+        //    upDownRot = 0.0f;
+        //}
 
         /// <summary>
         /// Creates a GameObject that is useful for cameras.
         /// </summary>
         /// <param name="position">Where it should go.</param>
         /// <param name="rotation">How it should be rotated.</param>
-        public GameObject(ref Vector3 position, ref Vector2 rotation)
+        public GameObject(ref Vector3 position, ref Vector2 rotation, GraphicsDevice gDevice)
         {
             this.position = position;
             leftRightRot = rotation.X;
@@ -79,7 +82,7 @@ namespace Fog_Project.World
         /// </summary>
         /// <param name="position">Where it should go.</param>
         /// <param name="rotation">How it will be rotated when displayed.</param>
-        public GameObject(ref Vector3 position, ref Vector3 rotation)
+        public GameObject(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
         {
             this.position = position;
             leftRightRot = 0.0f;

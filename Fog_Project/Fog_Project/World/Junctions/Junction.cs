@@ -18,11 +18,18 @@ namespace Fog_Project.World
         #region Fields
         private Dictionary<BoundingBox, Junction> exits;
         private List<MetaModel> giblies;
+        private Texture2D waterTexture;
+        private List<TexturedPlane> waterTiles;
         #endregion
 
         #region Properties
         public JunctionType Type { get; set; }
         #endregion
+        public Junction(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
+            : base(ref position, ref rotation, gDevice)
+        {
+        }
+
         public void Load(ContentManager gManager, GraphicsDevice gDevice, string modelName)
         {
             // If we created this junction using the wrong constructor our rotations will be
@@ -46,6 +53,33 @@ namespace Fog_Project.World
             model.model = gManager.Load<Model>("Models/Junctions/" + modelName);
             //model.Texture = gManager.Load<Texture2D>("Textures/Junctions/" + modelName);
             model.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionAll");
+
+            // This is the texture used for all of the water tiles around this junction:
+            waterTexture = gManager.Load<Texture2D>("Textures/Ocean/ocean");
+            waterTiles = new List<TexturedPlane>();
+            createWaterTiles();
+        }
+
+        private void createWaterTiles()
+        {
+            if (waterTiles == null)
+                throw new Exception("Why is waterTiles null?");
+
+            const float oceanTileSize = 5.0f;
+            const int numTiles = 3;
+            for (int x = -numTiles; x < numTiles; x++)
+            {
+                for (int y = -numTiles; y < numTiles; y++)
+                {
+                    TexturedPlane test = ModelUtil.CreateTexturedPlane(
+                        new Vector3(x * oceanTileSize, -0.5f, y * oceanTileSize),
+                        new Vector2(oceanTileSize),
+                        waterTexture,
+                        gDevice);
+                    waterTiles.Add(test);
+                }
+            }
+
         }
 
         private void addRandomModels(ContentManager gManager)
