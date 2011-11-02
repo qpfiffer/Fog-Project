@@ -101,8 +101,6 @@ namespace Fog_Project.World
                         junctions.Add(newJunction);
                         break;
                     default:
-                        newJunction.Position = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
-                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
                         newJunction.Type = JunctionType.triple;
                         newJunction.Load(gManager, gDevice, "junctionT");
                         junctions.Add(newJunction);
