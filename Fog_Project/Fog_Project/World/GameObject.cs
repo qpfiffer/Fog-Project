@@ -51,6 +51,10 @@ namespace Fog_Project.World
         }
         #endregion
 
+        #region Delegates
+        public delegate FogToggle;
+        #endregion
+
         // Commenting this out becuase it is confusing. You should be using one of the other
         // constructors.
         /// <summary>

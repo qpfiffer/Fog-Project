@@ -20,6 +20,7 @@ namespace Fog_Project.World
         private List<MetaModel> giblies;
         private Texture2D waterTexture;
         private List<TexturedPlane> waterTiles;
+        private BasicEffect waterEffect;
         #endregion
 
         #region Properties
@@ -57,6 +58,8 @@ namespace Fog_Project.World
             // This is the texture used for all of the water tiles around this junction:
             waterTexture = gManager.Load<Texture2D>("Textures/Ocean/ocean");
             waterTiles = new List<TexturedPlane>();
+            waterEffect = (BasicEffect)material.Clone();
+            waterEffect.Texture = waterTexture;
             createWaterTiles();
         }
 
@@ -67,9 +70,9 @@ namespace Fog_Project.World
 
             const float oceanTileSize = 5.0f;
             const int numTiles = 3;
-            for (int x = -numTiles; x < numTiles; x++)
+            for (int x = -(numTiles * (int)position.X); x < (numTiles * (int)position.X); x++)
             {
-                for (int y = -numTiles; y < numTiles; y++)
+                for (int y = -(numTiles * (int)position.Y); y < (numTiles * (int)position.Y); y++)
                 {
                     TexturedPlane test = ModelUtil.CreateTexturedPlane(
                         new Vector3(x * oceanTileSize, -0.5f, y * oceanTileSize),
@@ -119,6 +122,11 @@ namespace Fog_Project.World
             foreach (MetaModel gibly in giblies)
             {
                 ModelUtil.DrawModel(gibly, material);
+            }
+
+            foreach (TexturedPlane tile in waterTiles)
+            {
+                ModelUtil.DrawTexturedPlane(tile, waterEffect);
             }
         }
     }
