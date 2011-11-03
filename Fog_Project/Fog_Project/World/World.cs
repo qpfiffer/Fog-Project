@@ -72,7 +72,9 @@ namespace Fog_Project.World
                 Vector3 positionVector = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
                             0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
                 Vector3 rotationVector = Vector3.Zero;
-                Junction newJunction = new Junction(ref positionVector, ref rotationVector, gDevice);
+                Junction newJunction = new Junction(ref positionVector,
+                    ref rotationVector,
+                    gDevice);
 
                 switch (newJunctionType) 
                 {
@@ -150,6 +152,15 @@ namespace Fog_Project.World
                 info.oldKBDState.IsKeyUp(Keys.E))
             {
                 // Reserved for interacting with objects
+            }
+
+            if (info.curKBDState.IsKeyDown(Keys.F) &&
+                info.oldKBDState.IsKeyUp(Keys.F))
+            {
+                foreach (Junction junction in junctions)
+                {
+                    junction.ToggleFog();
+                }
             }
 
             if (info.curMouseState != info.oldMouseState)

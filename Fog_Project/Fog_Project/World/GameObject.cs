@@ -51,10 +51,6 @@ namespace Fog_Project.World
         }
         #endregion
 
-        #region Delegates
-        public delegate FogToggle;
-        #endregion
-
         // Commenting this out becuase it is confusing. You should be using one of the other
         // constructors.
         /// <summary>
@@ -107,6 +103,16 @@ namespace Fog_Project.World
         public virtual void Load(ContentManager gManager)
         {
             throw new NotImplementedException("This probably shouldn't be called directly.");
+        }
+
+        public void ToggleFog(bool fogEnabled)
+        {
+            material.FogEnabled = fogEnabled;
+        }
+
+        public void ToggleFog()
+        {
+            material.FogEnabled = !material.FogEnabled;
         }
 
         public virtual void Update(GameTime gTime)

@@ -59,7 +59,7 @@ namespace Fog_Project.World
             waterTexture = gManager.Load<Texture2D>("Textures/Ocean/ocean");
             waterTiles = new List<TexturedPlane>();
             waterEffect = (BasicEffect)material.Clone();
-            waterEffect.Texture = waterTexture;
+            waterEffect.Texture = waterTexture;         
             createWaterTiles();
         }
 
