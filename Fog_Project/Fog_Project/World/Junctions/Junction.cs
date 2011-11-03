@@ -20,7 +20,6 @@ namespace Fog_Project.World
         private List<MetaModel> giblies;
         private Texture2D waterTexture;
         private List<TexturedPlane> waterTiles;
-        private BasicEffect waterEffect;
         #endregion
 
         #region Properties
@@ -57,9 +56,7 @@ namespace Fog_Project.World
 
             // This is the texture used for all of the water tiles around this junction:
             waterTexture = gManager.Load<Texture2D>("Textures/Ocean/ocean");
-            waterTiles = new List<TexturedPlane>();
-            waterEffect = (BasicEffect)material.Clone();
-            waterEffect.Texture = waterTexture;         
+            waterTiles = new List<TexturedPlane>();     
             createWaterTiles();
         }
 
@@ -68,14 +65,14 @@ namespace Fog_Project.World
             if (waterTiles == null)
                 throw new Exception("Why is waterTiles null?");
 
-            const float oceanTileSize = 5.0f;
+            const float oceanTileSize = 2.5f;
             const int numTiles = 3;
-            for (int x = -(numTiles * (int)position.X); x < (numTiles * (int)position.X); x++)
+            for (int x = -numTiles; x < numTiles; x++)
             {
-                for (int y = -(numTiles * (int)position.Y); y < (numTiles * (int)position.Y); y++)
+                for (int y = -numTiles; y < numTiles; y++)
                 {
                     TexturedPlane test = ModelUtil.CreateTexturedPlane(
-                        new Vector3(x * oceanTileSize, -0.5f, y * oceanTileSize),
+                        new Vector3(position.X - (x * oceanTileSize), -0.15f, position.Z - (y * oceanTileSize)),
                         new Vector2(oceanTileSize),
                         waterTexture,
                         gDevice);
@@ -126,7 +123,7 @@ namespace Fog_Project.World
 
             foreach (TexturedPlane tile in waterTiles)
             {
-                ModelUtil.DrawTexturedPlane(tile, waterEffect);
+                ModelUtil.DrawTexturedPlane(tile, material);
             }
         }
     }

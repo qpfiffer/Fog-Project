@@ -113,7 +113,8 @@ namespace Fog_Project
             {
                 for (int y = -2; y < 3; y++)
                 {
-                    TexturedPlane test = ModelUtil.CreateTexturedPlane(new Vector3(x * oceanTileSize, -0.5f, y * oceanTileSize),
+                    TexturedPlane test = ModelUtil.CreateTexturedPlane(
+                        new Vector3(x * oceanTileSize, -0.15f, y * oceanTileSize),
                         new Vector2(oceanTileSize),
                         gManager.Load<Texture2D>("Textures/Ocean/ocean"),
                         gDevice);

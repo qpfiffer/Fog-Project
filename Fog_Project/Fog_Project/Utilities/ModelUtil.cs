@@ -108,7 +108,6 @@ namespace Fog_Project.Utilities
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 effect.TextureEnabled = true;
                 effect.Texture = plane.texture;
-                effect.EnableDefaultLighting();
 
                 plane.gDevice.Indices = plane.iBuffer;
                 plane.gDevice.SetVertexBuffer(plane.vBuffer);
