@@ -88,6 +88,7 @@ namespace Fog_Project.World
             {
                 const int X_JUNCTION_RANGE = 7;
                 const int Y_JUNCTION_RANGE = 7;
+                const int JUNCTION_RANGE_MULTIPLIER = 10;
 
                 // This little gem here gets the number of different types in an 
                 // enum:
@@ -96,8 +97,10 @@ namespace Fog_Project.World
                 int newJunctionType = tRandom.Next(enumCount);
                 // Create a new junction, the info if which we will fill out
                 // in a second:
-                Vector3 positionVector = new Vector3(tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * 5,
-                            0, tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * 5);
+                Vector3 positionVector = new Vector3(
+                    tRandom.Next(-X_JUNCTION_RANGE, X_JUNCTION_RANGE) * JUNCTION_RANGE_MULTIPLIER,
+                    0,
+                    tRandom.Next(-Y_JUNCTION_RANGE, Y_JUNCTION_RANGE) * JUNCTION_RANGE_MULTIPLIER);
                 Vector3 rotationVector = Vector3.Zero;
                 Junction newJunction = new Junction(ref positionVector,
                     ref rotationVector,
@@ -159,6 +162,14 @@ namespace Fog_Project.World
             {
                 // Reserved for interacting with objects
             }
+
+#if DEBUG
+            if (info.curKBDState.IsKeyDown(Keys.N) &&
+                info.oldKBDState.IsKeyUp(Keys.N))
+            {
+                mainPlayer.NoClip = !mainPlayer.NoClip;
+            }
+#endif
 
             if (info.curKBDState.IsKeyDown(Keys.F) &&
                 info.oldKBDState.IsKeyUp(Keys.F))

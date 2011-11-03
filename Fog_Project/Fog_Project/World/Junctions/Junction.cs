@@ -18,6 +18,7 @@ namespace Fog_Project.World
         #region Fields
         private Dictionary<BoundingBox, Junction> exits;
         private List<MetaModel> giblies;
+        private List<MetaModel> junctionConnections;
         private Texture2D waterTexture;
         private List<TexturedPlane> waterTiles;
         private int numberOfRotations;
@@ -30,7 +31,13 @@ namespace Fog_Project.World
         public Junction(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
             : base(ref position, ref rotation, gDevice)
         {
+            // Helps to figure out where we place out junctionConnections.
             numberOfRotations = 0;
+            exits = new Dictionary<BoundingBox, Junction>();
+            Type = JunctionType.single; // Gets set later.
+            giblies = new List<MetaModel>();
+            waterTiles = new List<TexturedPlane>();
+            junctionConnections = new List<MetaModel>();
         }
 
         public void Load(ContentManager gManager, string modelName)
@@ -41,13 +48,7 @@ namespace Fog_Project.World
             {
                 throw new Exception("This junction created using the wrong constructor!");
             }
-
-            // Someone should set this later, but if they don't just default to single:
-            this.Type = JunctionType.single;
-
-            exits = new Dictionary<BoundingBox, Junction>();
-            // Set up any models we might have on this juction:
-            giblies = new List<MetaModel>();
+            
             // Add some random models:
             addRandomModels(gManager);
 
@@ -57,10 +58,73 @@ namespace Fog_Project.World
             //model.Texture = gManager.Load<Texture2D>("Textures/Junctions/" + modelName);
             model.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionAll");
 
+            CreateJunctionConnections(gManager);
+
             // This is the texture used for all of the water tiles around this junction:
-            waterTexture = gManager.Load<Texture2D>("Textures/Ocean/ocean");
-            waterTiles = new List<TexturedPlane>();     
+            waterTexture = gManager.Load<Texture2D>("Textures/Ocean/ocean");             
             createWaterTiles();
+        }
+
+        private void CreateJunctionConnections(ContentManager gManager)
+        {
+            if (this.Type == JunctionType.single)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    MetaModel temp = new MetaModel();
+                    temp.model = gManager.Load<Model>("Models/Junctions/junctionConnection");
+                    //temp.Texture = model.Texture; // Should be junctionAll
+                    temp.Texture = gManager.Load<Texture2D>("Textures/Ocean/ocean");
+                    temp.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                    if (i == 0)
+                    {
+                        temp.Position = new Vector3(position.X, position.Y, position.Z + 5.0f);
+                    }
+                    else
+                    {
+                        temp.Position = new Vector3(position.X, position.Y, position.Z - 5.0f); 
+                    }
+                    junctionConnections.Add(temp);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < (int)this.Type; i++)
+                {
+                    MetaModel temp = new MetaModel();
+                    temp.model = gManager.Load<Model>("Models/Junctions/junctionConnection");
+                    //temp.Texture = model.Texture; // Should be junctionAll
+                    temp.Texture = gManager.Load<Texture2D>("Textures/Ocean/ocean"); 
+                    // Rotate every other junction by 90 degrees:
+                    if ((i % 2) == 0)
+                    {
+                        temp.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                    }
+                    else
+                    {
+                        temp.Rotation = Vector3.Zero;
+                    }
+
+                    // Now we do the positioning:
+                    switch (i % 4)
+                    {
+                        case 0:
+                            temp.Position = new Vector3(position.X, position.Y, position.Z - 7.5f); 
+                            break;
+                        case 1:
+                            temp.Position = new Vector3(position.X + 7.5f, position.Y, position.Z); 
+                            break;
+                        case 2:
+                            temp.Position = new Vector3(position.X, position.Y, position.Z + 7.5f); 
+                            break;
+                        case 3:
+                            temp.Position = new Vector3(position.X - 7.5f, position.Y, position.Z); 
+                            break;
+                    }
+
+                    junctionConnections.Add(temp);
+                }
+            }
         }
 
         private void createWaterTiles()
@@ -127,6 +191,11 @@ namespace Fog_Project.World
             foreach (MetaModel gibly in giblies)
             {
                 ModelUtil.DrawModel(gibly, material);
+            }
+
+            foreach (MetaModel junctionC in junctionConnections)
+            {
+                ModelUtil.DrawModel(junctionC, material);
             }
         }
     }

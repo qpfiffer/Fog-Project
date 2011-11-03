@@ -72,11 +72,13 @@ namespace Fog_Project
 
         public void addToCameraPosition(ref Vector3 toAdd)
         {
+            float localMoveSpeed = moveSpeed;
             Vector3 oldPosition = position;
             Matrix cameraRotation = Matrix.Identity;
             if (NoClip)
             {
                 cameraRotation = Matrix.CreateRotationX(upDownRot) * Matrix.CreateRotationY(leftRightRot);
+                localMoveSpeed *= 2;
             }
             else
             {
@@ -86,7 +88,7 @@ namespace Fog_Project
             }
 
             Vector3 rotatedVector = Vector3.Transform(toAdd, cameraRotation);
-            oldPosition += moveSpeed * rotatedVector;
+            oldPosition += localMoveSpeed * rotatedVector;
 
             // DO COLLISION HERE
 
