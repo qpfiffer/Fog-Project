@@ -54,9 +54,36 @@ namespace Fog_Project.World
             this.gDevice = gDevice;
             this.gManager = gManager;                    
 
-            #region SetupJunctions
+            SetupJunctions(gManager, gDevice);
+            Setup3D(gDevice);            
+        }
+
+        private void Setup3D(GraphicsDevice gDevice)
+        {
+            // Get a unified global effect from the model util thing:
+            globalEffect = ModelUtil.CreateGlobalEffect(gDevice);
+            // We create a matrixDescriptor here becuase we can't set properties of properties:
+            MatrixDescriptor cMatrices = mainPlayer.Matrices;
+            ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position,
+                ref cMatrices);
+            // Set the pieces of out matrix descriptor:
+            cMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f),
+                gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
+            cMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
+
+            // Update the global effect:
+            globalEffect.View = cMatrices.view;
+            globalEffect.World = cMatrices.world;
+            globalEffect.Projection = cMatrices.proj;
+
+            // Finally place it where it needs to be:
+            mainPlayer.Matrices = cMatrices;
+        }
+
+        private void SetupJunctions(ContentManager gManager, GraphicsDevice gDevice)
+        {
             Random tRandom = new Random();
-            int randomJunctionNum = tRandom.Next(5,10);
+            int randomJunctionNum = tRandom.Next(5, 10);
             for (int i = 0; i < randomJunctionNum; i++)
             {
                 const int X_JUNCTION_RANGE = 7;
@@ -76,12 +103,12 @@ namespace Fog_Project.World
                     ref rotationVector,
                     gDevice);
 
-                switch (newJunctionType) 
+                switch (newJunctionType)
                 {
                     // Single:
                     case 0:
                         newJunction.Type = JunctionType.single;
-                        newJunction.Load(gManager, "junctionSingle");                    
+                        newJunction.Load(gManager, "junctionSingle");
                         junctions.Add(newJunction);
                         break;
                     // Corner:
@@ -99,7 +126,7 @@ namespace Fog_Project.World
                     // Quad:
                     case 3:
                         newJunction.Type = JunctionType.triple;
-                        newJunction.Load(gManager, "junctionConnection");
+                        newJunction.Load(gManager, "junctionQuad");
                         junctions.Add(newJunction);
                         break;
                     default:
@@ -109,27 +136,6 @@ namespace Fog_Project.World
                         break;
                 }
             }
-            #endregion
-            #region Setup3D
-            // Get a unified global effect from the model util thing:
-            globalEffect = ModelUtil.CreateGlobalEffect(gDevice);
-            // We create a matrixDescriptor here becuase we can't set properties of properties:
-            MatrixDescriptor cMatrices = mainPlayer.Matrices;
-            ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position,
-                ref cMatrices);
-            // Set the pieces of out matrix descriptor:
-            cMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f),
-                gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
-            cMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
-
-            // Update the global effect:
-            globalEffect.View = cMatrices.view;
-            globalEffect.World= cMatrices.world;
-            globalEffect.Projection= cMatrices.proj;
-
-            // Finally place it where it needs to be:
-            mainPlayer.Matrices = cMatrices;
-            #endregion
         }
 
         private void collideMove(float amount, Vector3 moveVector)

@@ -20,14 +20,17 @@ namespace Fog_Project.World
         private List<MetaModel> giblies;
         private Texture2D waterTexture;
         private List<TexturedPlane> waterTiles;
+        private int numberOfRotations;
         #endregion
 
         #region Properties
         public JunctionType Type { get; set; }
+        public int Rotations { get; set; }
         #endregion
         public Junction(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
             : base(ref position, ref rotation, gDevice)
         {
+            numberOfRotations = 0;
         }
 
         public void Load(ContentManager gManager, string modelName)
