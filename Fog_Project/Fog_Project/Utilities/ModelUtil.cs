@@ -88,7 +88,7 @@ namespace Fog_Project.Utilities
                     effect.FogStart = globalEffect.FogStart;
                     effect.FogEnd = globalEffect.FogEnd;
 
-                    effect.EnableDefaultLighting();
+                    effect.EnableDefaultLighting();                 
                     effect.Texture = m.Texture;
                     effect.TextureEnabled = globalEffect.TextureEnabled;
 
