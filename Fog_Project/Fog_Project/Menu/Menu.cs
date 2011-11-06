@@ -81,7 +81,7 @@ namespace Fog_Project
             MetaModel junction = new MetaModel();
             junction.model = gManager.Load<Model>("Models/Junctions/junctionT");
             junction.Position = Vector3.Zero;
-            junction.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
+            junction.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
             junction.Texture = gManager.Load<Texture2D>("Textures/Junctions/junctionAll");
 
             MetaModel singleLeft = new MetaModel();

@@ -67,14 +67,15 @@ namespace Fog_Project.World
 
         private void CreateJunctionConnections(ContentManager gManager)
         {
+            MetaModel temp = new MetaModel();
+            temp.model = gManager.Load<Model>("Models/Junctions/junctionConnection");
+            temp.Texture = model.Texture; // Should be junctionAll
+            //temp.Texture = gManager.Load<Texture2D>("Textures/Ocean/ocean"); 
+
             if (this.Type == JunctionType.single)
             {
                 for (int i = 0; i < 2; i++)
-                {
-                    MetaModel temp = new MetaModel();
-                    temp.model = gManager.Load<Model>("Models/Junctions/junctionConnection");
-                    //temp.Texture = model.Texture; // Should be junctionAll
-                    temp.Texture = gManager.Load<Texture2D>("Textures/Ocean/ocean");
+                {                  
                     temp.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                     if (i == 0)
                     {
@@ -89,12 +90,8 @@ namespace Fog_Project.World
             }
             else
             {
-                for (int i = 0; i < (int)this.Type; i++)
+                for (int i = 0; i < ((int)this.Type)+1; i++)
                 {
-                    MetaModel temp = new MetaModel();
-                    temp.model = gManager.Load<Model>("Models/Junctions/junctionConnection");
-                    temp.Texture = model.Texture; // Should be junctionAll
-                    //temp.Texture = gManager.Load<Texture2D>("Textures/Ocean/ocean"); 
                     // Rotate every other junction by 90 degrees:
                     if ((i % 2) == 0)
                     {
