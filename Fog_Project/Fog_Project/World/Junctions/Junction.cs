@@ -93,8 +93,8 @@ namespace Fog_Project.World
                 {
                     MetaModel temp = new MetaModel();
                     temp.model = gManager.Load<Model>("Models/Junctions/junctionConnection");
-                    //temp.Texture = model.Texture; // Should be junctionAll
-                    temp.Texture = gManager.Load<Texture2D>("Textures/Ocean/ocean"); 
+                    temp.Texture = model.Texture; // Should be junctionAll
+                    //temp.Texture = gManager.Load<Texture2D>("Textures/Ocean/ocean"); 
                     // Rotate every other junction by 90 degrees:
                     if ((i % 2) == 0)
                     {

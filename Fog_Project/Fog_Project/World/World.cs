@@ -116,7 +116,7 @@ namespace Fog_Project.World
                         break;
                     // Corner:
                     case 1:
-                        newJunction.Type = JunctionType.triple;
+                        newJunction.Type = JunctionType.corner;
                         newJunction.Load(gManager, "junctionCorner");
                         junctions.Add(newJunction);
                         break;
@@ -128,7 +128,7 @@ namespace Fog_Project.World
                         break;
                     // Quad:
                     case 3:
-                        newJunction.Type = JunctionType.triple;
+                        newJunction.Type = JunctionType.quad;
                         newJunction.Load(gManager, "junctionQuad");
                         junctions.Add(newJunction);
                         break;
