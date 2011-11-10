@@ -106,9 +106,6 @@ namespace Fog_Project.World
                     ref rotationVector,
                     gDevice);
 
-                //DEBUG, DELETE ME:
-                newJunctionType = 0;
-
                 switch (newJunctionType)
                 {
                     // Single:
