@@ -21,7 +21,6 @@ namespace Fog_Project.World
         private List<MetaModel> junctionConnections;
         private Texture2D waterTexture;
         private List<TexturedPlane> waterTiles;
-        private int numberOfRotations;
         #endregion
 
         #region Properties
@@ -31,8 +30,6 @@ namespace Fog_Project.World
         public Junction(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
             : base(ref position, ref rotation, gDevice)
         {
-            // Helps to figure out where we place out junctionConnections.
-            numberOfRotations = 0;
             exits = new Dictionary<BoundingBox, Junction>();
             Type = JunctionType.single; // Gets set later.
             giblies = new List<MetaModel>();
@@ -76,14 +73,14 @@ namespace Fog_Project.World
             {
                 for (int i = 0; i < 2; i++)
                 {                  
-                    temp.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                    temp.Rotation = new Vector3(0, 0, 0);
                     if (i == 0)
                     {
-                        temp.Position = new Vector3(position.X, position.Y, position.Z + 5.0f);
+                        temp.Position = new Vector3(position.X + 5.0f, position.Y, position.Z);
                     }
                     else
                     {
-                        temp.Position = new Vector3(position.X, position.Y, position.Z - 5.0f); 
+                        temp.Position = new Vector3(position.X - 5.0f, position.Y, position.Z); 
                     }
                     junctionConnections.Add(temp);
                 }

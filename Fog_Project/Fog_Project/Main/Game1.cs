@@ -23,11 +23,11 @@ namespace Fog_Project
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        #region CONSTANTS
-        const int DEFAULT_WINDOW_WIDTH = 1440;
-        const int DEFAULT_WINDOW_HEIGHT = 900;
+        #region CONSTANTS      
+        const int DEFAULT_WINDOW_WIDTH = 1280;
+        const int DEFAULT_WINDOW_HEIGHT = 720;
         const bool AA_DEFAULT_ON = true;
-        const bool FULLSCREEN_DEFAULT_ON = false;
+        const bool FULLSCREEN_DEFAULT_ON = true;
         #endregion
 
         #region INPUT
@@ -59,10 +59,21 @@ namespace Fog_Project
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = DEFAULT_WINDOW_WIDTH;
-            graphics.PreferredBackBufferHeight = DEFAULT_WINDOW_HEIGHT;
-            graphics.PreferMultiSampling = AA_DEFAULT_ON;
-            graphics.IsFullScreen = FULLSCREEN_DEFAULT_ON;
+            if (FULLSCREEN_DEFAULT_ON)
+            {
+                graphics.IsFullScreen = FULLSCREEN_DEFAULT_ON;
+                graphics.PreferredBackBufferWidth = 
+                    GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                graphics.PreferredBackBufferHeight =
+                    GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            }
+            else
+            {
+                graphics.PreferredBackBufferWidth = DEFAULT_WINDOW_WIDTH;
+                graphics.PreferredBackBufferHeight = DEFAULT_WINDOW_HEIGHT;
+            }
+
+            graphics.PreferMultiSampling = AA_DEFAULT_ON;            
             graphics.ApplyChanges();
 
             gameState = GameState.menu;
@@ -103,7 +114,8 @@ namespace Fog_Project
         private void loadWorld()
         {
             gameState = GameState.loading;
-            Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2,
+                GraphicsDevice.Viewport.Height / 2);
             inputInfo.oldMouseState = Mouse.GetState();
             this.mWorld = new World.World();
             mWorld.Load(Content, GraphicsDevice);
