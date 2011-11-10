@@ -35,7 +35,7 @@ namespace Fog_Project.World
         #endregion
         public World()
         {
-            Vector3 playerPos = new Vector3(0,1.0f,3.0f);
+            Vector3 playerPos = new Vector3(0,Player.chestHeight,3.0f);
             Vector2 playerRot = new Vector2(0.0f, 0.0f);
 
             rState = new RasterizerState();
@@ -55,6 +55,8 @@ namespace Fog_Project.World
             this.gManager = gManager;                    
 
             SetupJunctions(gManager, gDevice);
+            mainPlayer.Position = new Vector3(junctions[0].Position.X,
+                Player.chestHeight, junctions[0].Position.Z);
             Setup3D(gDevice);            
         }
 
@@ -111,33 +113,30 @@ namespace Fog_Project.World
                     // Single:
                     case 0:
                         newJunction.Type = JunctionType.single;
-                        newJunction.Load(gManager, "junctionSingle");
-                        junctions.Add(newJunction);
+                        newJunction.Load(gManager, "junctionSingle");                        
                         break;
                     // Corner:
                     case 1:
                         newJunction.Type = JunctionType.corner;
                         newJunction.Load(gManager, "junctionCorner");
-                        junctions.Add(newJunction);
                         break;
                     // Triple:
                     case 2:
                         newJunction.Type = JunctionType.triple;
                         newJunction.Load(gManager, "junctionT");
-                        junctions.Add(newJunction);
                         break;
                     // Quad:
                     case 3:
                         newJunction.Type = JunctionType.quad;
                         newJunction.Load(gManager, "junctionQuad");
-                        junctions.Add(newJunction);
                         break;
                     default:
                         newJunction.Type = JunctionType.triple;
                         newJunction.Load(gManager, "junctionT");
-                        junctions.Add(newJunction);
                         break;
                 }
+                // Add it to the list.
+                junctions.Add(newJunction);
             }
         }
 
