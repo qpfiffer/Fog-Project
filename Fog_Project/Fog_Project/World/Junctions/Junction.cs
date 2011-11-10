@@ -67,12 +67,12 @@ namespace Fog_Project.World
             MetaModel temp = new MetaModel();
             temp.model = gManager.Load<Model>("Models/Junctions/junctionConnection");
             temp.Texture = model.Texture; // Should be junctionAll
-            //temp.Texture = gManager.Load<Texture2D>("Textures/Ocean/ocean"); 
 
             if (this.Type == JunctionType.single)
             {
+                #region Inner
                 for (int i = 0; i < 2; i++)
-                {                  
+                {
                     temp.Rotation = new Vector3(0, 0, 0);
                     if (i == 0)
                     {
@@ -80,13 +80,30 @@ namespace Fog_Project.World
                     }
                     else
                     {
-                        temp.Position = new Vector3(position.X - 5.0f, position.Y, position.Z); 
+                        temp.Position = new Vector3(position.X - 5.0f, position.Y, position.Z);
                     }
                     junctionConnections.Add(temp);
                 }
+                #endregion
+                #region Outer
+                for (int i = 0; i < 2; i++)
+                {
+                    temp.Rotation = new Vector3(0, 0, 0);
+                    if (i == 0)
+                    {
+                        temp.Position = new Vector3(position.X + 12.5f, position.Y, position.Z);
+                    }
+                    else
+                    {
+                        temp.Position = new Vector3(position.X - 12.5f, position.Y, position.Z);
+                    }
+                    junctionConnections.Add(temp);
+                }
+                #endregion
             }
             else
             {
+                #region Inner
                 for (int i = 0; i < ((int)this.Type)+1; i++)
                 {
                     // Rotate every other junction by 90 degrees:
@@ -118,6 +135,40 @@ namespace Fog_Project.World
 
                     junctionConnections.Add(temp);
                 }
+                #endregion
+                #region Inner
+                for (int i = 0; i < ((int)this.Type) + 1; i++)
+                {
+                    // Rotate every other junction by 90 degrees:
+                    if ((i % 2) == 0)
+                    {
+                        temp.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                    }
+                    else
+                    {
+                        temp.Rotation = Vector3.Zero;
+                    }
+
+                    // Now we do the positioning:
+                    switch (i % 4)
+                    {
+                        case 0:
+                            temp.Position = new Vector3(position.X, position.Y, position.Z - 15.0f);
+                            break;
+                        case 1:
+                            temp.Position = new Vector3(position.X + 15.0f, position.Y, position.Z);
+                            break;
+                        case 2:
+                            temp.Position = new Vector3(position.X, position.Y, position.Z + 15.0f);
+                            break;
+                        case 3:
+                            temp.Position = new Vector3(position.X - 15.0f, position.Y, position.Z);
+                            break;
+                    }
+
+                    junctionConnections.Add(temp);
+                }
+                #endregion
             }
         }
 

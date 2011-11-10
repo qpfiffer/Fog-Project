@@ -88,8 +88,8 @@ namespace Fog_Project.World
             int randomJunctionNum = tRandom.Next(5, 10);
             for (int i = 0; i < randomJunctionNum; i++)
             {
-                const int X_JUNCTION_RANGE = 3;
-                const int Y_JUNCTION_RANGE = 3;
+                const int X_JUNCTION_RANGE = 7;
+                const int Y_JUNCTION_RANGE = 7;
                 const int JUNCTION_RANGE_MULTIPLIER = 10;
 
                 // This little gem here gets the number of different types in an 
