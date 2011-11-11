@@ -76,6 +76,15 @@ namespace Fog_Project.World
             }
         }
 
+        public BoundingBox getRandomBBox()
+        {
+            // This is probably a pretty shitty way to do this.
+            Random tRandom = new Random();
+            BoundingBox[] tempKeyHolder = new BoundingBox[exits.Keys.Count];
+            exits.Keys.CopyTo(tempKeyHolder, 0);
+            return (tempKeyHolder[tRandom.Next(tempKeyHolder.Length)]);
+        }
+
         private void CreateJunctionConnections(ContentManager gManager)
         {
             const float BBOX_SIZE = 1.25f;
@@ -172,28 +181,28 @@ namespace Fog_Project.World
                         case 0:
                             temp.Position = new Vector3(position.X, position.Y, position.Z - 15.0f);
                             BoundingBoxPosition = new Vector3(position.X,
-                                position.Y, position.Z - 10.0f);
+                                Player.chestHeight, position.Z - 10.0f);
                             exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 1:
                             temp.Position = new Vector3(position.X + 15.0f, position.Y, position.Z);
                             BoundingBoxPosition = new Vector3(position.X + 10.0f,
-                                position.Y, position.Z);
+                                Player.chestHeight, position.Z);
                             exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 2:
                             temp.Position = new Vector3(position.X, position.Y, position.Z + 15.0f);
                             BoundingBoxPosition = new Vector3(position.X,
-                                position.Y, position.Z + 10.0f);
+                                Player.chestHeight, position.Z + 10.0f);
                             exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 3:
                             temp.Position = new Vector3(position.X - 15.0f, position.Y, position.Z);
                             BoundingBoxPosition = new Vector3(position.X - 10.0f,
-                                position.Y, position.Z);
+                                Player.chestHeight, position.Z);
                             exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
                             break;
