@@ -145,7 +145,7 @@ namespace Fog_Project.World
             foreach (Junction junction in junctions)
             {
                 List<Junction> portalsToAdd = new List<Junction>();
-                for (int i = 0; i < (int)junction.Type; i++)
+                for (int i = 0; i < (int)junction.Type + 1; i++)
                 {
                     // Pick a random junction to the list and add it
                     // TODO: Junctions probably shouldn't reference themselves.

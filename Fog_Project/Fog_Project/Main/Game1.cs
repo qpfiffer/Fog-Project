@@ -27,7 +27,7 @@ namespace Fog_Project
         const int DEFAULT_WINDOW_WIDTH = 1280;
         const int DEFAULT_WINDOW_HEIGHT = 720;
         const bool AA_DEFAULT_ON = true;
-        const bool FULLSCREEN_DEFAULT_ON = true;
+        const bool FULLSCREEN_DEFAULT_ON = false;
         #endregion
 
         #region INPUT
