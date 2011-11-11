@@ -90,9 +90,15 @@ namespace Fog_Project
             Vector3 rotatedVector = Vector3.Transform(toAdd, cameraRotation);
             oldPosition += localMoveSpeed * rotatedVector;
 
-            // DO COLLISION HERE
-
             position = oldPosition;
+            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
+        }
+
+        public void setCameraPosition(ref Vector3 newPosition)
+        {
+            Matrix cameraRotation = Matrix.Identity;
+            cameraRotation = Matrix.CreateRotationX(0.0f) * Matrix.CreateRotationY(leftRightRot);
+            position = Vector3.Transform(newPosition, cameraRotation);
             ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
         }
     }

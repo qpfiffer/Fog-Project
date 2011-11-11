@@ -26,6 +26,7 @@ namespace Fog_Project.World
         #endregion
 
         #region World
+        Junction currentJunction;
         // All junctions are kept here:
         List<Junction> junctions;
         // Spawned junctions:
@@ -55,8 +56,13 @@ namespace Fog_Project.World
             this.gManager = gManager;                    
 
             SetupJunctions(gManager, gDevice);
+            // Move the player to the first junction:
             mainPlayer.Position = new Vector3(junctions[0].Position.X,
                 Player.chestHeight, junctions[0].Position.Z);
+            // Make sure the game knows which junction we are
+            // standing on:
+            currentJunction = junctions[0];
+
             Setup3D(gDevice);            
         }
 
