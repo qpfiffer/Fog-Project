@@ -86,6 +86,7 @@ namespace Fog_Project.World
         {
             Random tRandom = new Random();
             int randomJunctionNum = tRandom.Next(5, 10);
+            #region Build_Junctions
             for (int i = 0; i < randomJunctionNum; i++)
             {
                 const int X_JUNCTION_RANGE = 7;
@@ -138,6 +139,21 @@ namespace Fog_Project.World
                 // Add it to the list.
                 junctions.Add(newJunction);
             }
+            #endregion
+
+            #region Build_Portals
+            foreach (Junction junction in junctions)
+            {
+                List<Junction> portalsToAdd = new List<Junction>();
+                for (int i = 0; i < (int)junction.Type; i++)
+                {
+                    // Pick a random junction to the list and add it
+                    // TODO: Junctions probably shouldn't reference themselves.
+                    portalsToAdd.Add(junctions[tRandom.Next(junctions.Count)]);
+                }
+                junction.addPortalJunctions(portalsToAdd);
+            }
+            #endregion
         }
 
         private void collideMove(float amount, Vector3 moveVector)

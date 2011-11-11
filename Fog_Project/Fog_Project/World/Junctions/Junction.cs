@@ -62,8 +62,23 @@ namespace Fog_Project.World
             createWaterTiles();
         }
 
+        public void addPortalJunctions(List<Junction> toAdd)
+        {
+            Random tRandom = new Random();
+            BoundingBox[] tempKeyHolder = new BoundingBox[exits.Keys.Count];
+            exits.Keys.CopyTo(tempKeyHolder, 0);
+            int usedKeys = 0;
+
+            foreach (Junction junction in toAdd)
+            {
+                exits[tempKeyHolder[usedKeys]] = junction;
+                usedKeys++;
+            }
+        }
+
         private void CreateJunctionConnections(ContentManager gManager)
         {
+            const float BBOX_SIZE = 1.25f;
             MetaModel temp = new MetaModel();
             temp.model = gManager.Load<Model>("Models/Junctions/junctionConnection");
             temp.Texture = model.Texture; // Should be junctionAll
@@ -149,20 +164,29 @@ namespace Fog_Project.World
                         temp.Rotation = Vector3.Zero;
                     }
 
-                    // Now we do the positioning:
+                    // In addition to positioning, we also create the bounding boxes that will serve
+                    // as portals to the other junctions:
                     switch (i % 4)
                     {
                         case 0:
                             temp.Position = new Vector3(position.X, position.Y, position.Z - 15.0f);
+                            exits.Add(new BoundingBox(temp.Position - new Vector3(BBOX_SIZE),
+                                temp.Position + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 1:
                             temp.Position = new Vector3(position.X + 15.0f, position.Y, position.Z);
+                            exits.Add(new BoundingBox(temp.Position - new Vector3(BBOX_SIZE),
+                                temp.Position + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 2:
                             temp.Position = new Vector3(position.X, position.Y, position.Z + 15.0f);
+                            exits.Add(new BoundingBox(temp.Position - new Vector3(BBOX_SIZE),
+                                temp.Position + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 3:
                             temp.Position = new Vector3(position.X - 15.0f, position.Y, position.Z);
+                            exits.Add(new BoundingBox(temp.Position - new Vector3(BBOX_SIZE),
+                                temp.Position + new Vector3(BBOX_SIZE)), null);
                             break;
                     }
 
@@ -227,6 +251,17 @@ namespace Fog_Project.World
         public void Draw(GraphicsDevice gDevice)
         {        
             ModelUtil.DrawModel(model, material);
+
+#if DEBUG
+            foreach (BoundingBox portal in exits.Keys)
+            {
+                BoundingBoxRenderer.Render(portal,
+                    gDevice,
+                    material.View,
+                    material.Projection,
+                    Color.Red);
+            }
+#endif
 
             foreach (TexturedPlane tile in waterTiles)
             {
