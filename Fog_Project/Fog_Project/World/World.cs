@@ -145,7 +145,15 @@ namespace Fog_Project.World
             foreach (Junction junction in junctions)
             {
                 List<Junction> portalsToAdd = new List<Junction>();
-                for (int i = 0; i < (int)junction.Type + 1; i++)
+                // Every junction except single has the same number of sides
+                // per its enum type.
+                int compare = (int)junction.Type + 1;
+                
+                // The enum is a little fucked up so we do it this way:
+                if (junction.Type == JunctionType.single)
+                    compare = (int)junction.Type;
+
+                for (int i = 0; i < compare; i++)
                 {
                     // Pick a random junction to the list and add it
                     // TODO: Junctions probably shouldn't reference themselves.

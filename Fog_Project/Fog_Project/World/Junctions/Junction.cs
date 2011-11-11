@@ -166,27 +166,36 @@ namespace Fog_Project.World
 
                     // In addition to positioning, we also create the bounding boxes that will serve
                     // as portals to the other junctions:
+                    Vector3 BoundingBoxPosition;
                     switch (i % 4)
                     {
                         case 0:
                             temp.Position = new Vector3(position.X, position.Y, position.Z - 15.0f);
-                            exits.Add(new BoundingBox(temp.Position - new Vector3(BBOX_SIZE),
-                                temp.Position + new Vector3(BBOX_SIZE)), null);
+                            BoundingBoxPosition = new Vector3(position.X,
+                                position.Y, position.Z - 10.0f);
+                            exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 1:
                             temp.Position = new Vector3(position.X + 15.0f, position.Y, position.Z);
-                            exits.Add(new BoundingBox(temp.Position - new Vector3(BBOX_SIZE),
-                                temp.Position + new Vector3(BBOX_SIZE)), null);
+                            BoundingBoxPosition = new Vector3(position.X + 10.0f,
+                                position.Y, position.Z);
+                            exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 2:
                             temp.Position = new Vector3(position.X, position.Y, position.Z + 15.0f);
-                            exits.Add(new BoundingBox(temp.Position - new Vector3(BBOX_SIZE),
-                                temp.Position + new Vector3(BBOX_SIZE)), null);
+                            BoundingBoxPosition = new Vector3(position.X,
+                                position.Y, position.Z + 10.0f);
+                            exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
                             break;
                         case 3:
                             temp.Position = new Vector3(position.X - 15.0f, position.Y, position.Z);
-                            exits.Add(new BoundingBox(temp.Position - new Vector3(BBOX_SIZE),
-                                temp.Position + new Vector3(BBOX_SIZE)), null);
+                            BoundingBoxPosition = new Vector3(position.X - 10.0f,
+                                position.Y, position.Z);
+                            exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
                             break;
                     }
 
