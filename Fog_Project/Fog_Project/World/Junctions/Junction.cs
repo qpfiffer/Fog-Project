@@ -76,13 +76,20 @@ namespace Fog_Project.World
             }
         }
 
-        public BoundingBox getRandomBBox()
+        public BoundingBox getRandomPortal()
         {
             // This is probably a pretty shitty way to do this.
             Random tRandom = new Random();
             BoundingBox[] tempKeyHolder = new BoundingBox[exits.Keys.Count];
             exits.Keys.CopyTo(tempKeyHolder, 0);
             return (tempKeyHolder[tRandom.Next(tempKeyHolder.Length)]);
+        }
+
+        public List<BoundingBox> getAllPortals()
+        {
+            BoundingBox[] tempKeys = new BoundingBox[exits.Keys.Count];
+            exits.Keys.CopyTo(tempKeys, 0);
+            return tempKeys.ToList<BoundingBox>();
         }
 
         private void CreateJunctionConnections(ContentManager gManager)
