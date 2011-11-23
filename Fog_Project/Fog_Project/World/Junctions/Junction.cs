@@ -123,14 +123,26 @@ namespace Fog_Project.World
                 for (int i = 0; i < 2; i++)
                 {
                     temp.Rotation = new Vector3(0, 0, 0);
+                    Vector3 BoundingBoxPosition;
+                    BoundingBox newPortal = new BoundingBox();
                     if (i == 0)
                     {
                         temp.Position = new Vector3(position.X + 12.5f, position.Y, position.Z);
+                        BoundingBoxPosition = new Vector3(position.X + 7.5f,
+                                Player.chestHeight, position.Z);
+                        newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                            BoundingBoxPosition + new Vector3(BBOX_SIZE));
                     }
                     else
                     {
                         temp.Position = new Vector3(position.X - 12.5f, position.Y, position.Z);
+                        BoundingBoxPosition = new Vector3(position.X - 7.5f,
+                                Player.chestHeight, position.Z);
+                        newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                            BoundingBoxPosition + new Vector3(BBOX_SIZE));
                     }
+                    exits.Add(newPortal, null);
+                    Portals.Add(newPortal);
                     junctionConnections.Add(temp);
                 }
                 #endregion
