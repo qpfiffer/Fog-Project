@@ -25,6 +25,7 @@ namespace Fog_Project.World
 
         #region Properties
         public JunctionType Type { get; set; }
+        public List<BoundingBox> Portals { get; set; }
         public int Rotations { get; set; }
         #endregion
         public Junction(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
@@ -35,6 +36,7 @@ namespace Fog_Project.World
             giblies = new List<MetaModel>();
             waterTiles = new List<TexturedPlane>();
             junctionConnections = new List<MetaModel>();
+            Portals = new List<BoundingBox>();
         }
 
         public void Load(ContentManager gManager, string modelName)
@@ -45,7 +47,7 @@ namespace Fog_Project.World
             {
                 throw new Exception("This junction created using the wrong constructor!");
             }
-            
+
             // Add some random models:
             addRandomModels(gManager);
 
@@ -83,13 +85,6 @@ namespace Fog_Project.World
             BoundingBox[] tempKeyHolder = new BoundingBox[exits.Keys.Count];
             exits.Keys.CopyTo(tempKeyHolder, 0);
             return (tempKeyHolder[tRandom.Next(tempKeyHolder.Length)]);
-        }
-
-        public List<BoundingBox> getAllPortals()
-        {
-            BoundingBox[] tempKeys = new BoundingBox[exits.Keys.Count];
-            exits.Keys.CopyTo(tempKeys, 0);
-            return tempKeys.ToList<BoundingBox>();
         }
 
         private void CreateJunctionConnections(ContentManager gManager)
@@ -183,38 +178,40 @@ namespace Fog_Project.World
                     // In addition to positioning, we also create the bounding boxes that will serve
                     // as portals to the other junctions:
                     Vector3 BoundingBoxPosition;
+                    BoundingBox newPortal = new BoundingBox();
                     switch (i % 4)
                     {
                         case 0:
                             temp.Position = new Vector3(position.X, position.Y, position.Z - 15.0f);
                             BoundingBoxPosition = new Vector3(position.X,
                                 Player.chestHeight, position.Z - 10.0f);
-                            exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
-                                BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
+                            newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE));
                             break;
                         case 1:
                             temp.Position = new Vector3(position.X + 15.0f, position.Y, position.Z);
                             BoundingBoxPosition = new Vector3(position.X + 10.0f,
                                 Player.chestHeight, position.Z);
-                            exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
-                                BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
+                            newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE));                          
                             break;
                         case 2:
                             temp.Position = new Vector3(position.X, position.Y, position.Z + 15.0f);
                             BoundingBoxPosition = new Vector3(position.X,
                                 Player.chestHeight, position.Z + 10.0f);
-                            exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
-                                BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
+                            newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE));
                             break;
                         case 3:
                             temp.Position = new Vector3(position.X - 15.0f, position.Y, position.Z);
                             BoundingBoxPosition = new Vector3(position.X - 10.0f,
                                 Player.chestHeight, position.Z);
-                            exits.Add(new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
-                                BoundingBoxPosition + new Vector3(BBOX_SIZE)), null);
+                            newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE));
                             break;
                     }
-
+                    exits.Add(newPortal, null);
+                    Portals.Add(newPortal);
                     junctionConnections.Add(temp);
                 }
                 #endregion

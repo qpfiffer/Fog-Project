@@ -173,6 +173,9 @@ namespace Fog_Project.World
         private void collideMove(float amount, Vector3 moveVector)
         {
             // Collisions will go here eventually.
+            foreach (BoundingBox portals in currentJunction.Portals)
+            {
+            }
             Vector3 finalVector = moveVector * amount;
             mainPlayer.addToCameraPosition(ref finalVector);
         }
@@ -255,11 +258,16 @@ namespace Fog_Project.World
             gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.LightCyan, 1.0f, 0);
             gDevice.RasterizerState = rState;
 
-            foreach (Junction junction in junctions)
-            {
-                junction.updateMatrices(mainPlayer.Matrices);
-                junction.Draw(gDevice);
-            }
+            // If you want to draw all of the junctions at once, use 
+            // this:
+            //foreach (Junction junction in junctions)
+            //{
+            //    junction.updateMatrices(mainPlayer.Matrices);
+            //    junction.Draw(gDevice);
+            //}
+
+            currentJunction.updateMatrices(mainPlayer.Matrices);
+            currentJunction.Draw(gDevice);
 
             //foreach (MetaModel model in modelsToDraw)
             //{
