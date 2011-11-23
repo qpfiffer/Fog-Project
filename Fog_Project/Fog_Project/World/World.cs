@@ -158,13 +158,18 @@ namespace Fog_Project.World
                 
                 // The enum is a little fucked up so we do it this way:
                 if (junction.Type == JunctionType.single)
-                    compare = (int)junction.Type;
+                    compare = 2;
 
                 for (int i = 0; i < compare; i++)
                 {
                     // Pick a random junction to the list and add it
-                    // TODO: Junctions probably shouldn't reference themselves.
-                    portalsToAdd.Add(junctions[tRandom.Next(junctions.Count)]);
+                    Junction toAdd = junctions[tRandom.Next(junctions.Count)];
+                    while (toAdd != junction)
+                    {
+                        // Dirty little thing to do but I've got the processing power.
+                        toAdd = junctions[tRandom.Next(junctions.Count)];
+                    }
+                    portalsToAdd.Add(toAdd);
                 }
                 junction.addPortalJunctions(portalsToAdd);
             }
@@ -220,13 +225,19 @@ namespace Fog_Project.World
                 // Move the player there:
                 BoundingBox destinationPortal = destinationJunction.getRandomPortal();
                 // Compute the center of the new destination portal:
-                Vector3 newPortalCenter = new Vector3(destinationPortal.Max.X - destinationPortal.Min.X, 
+                Vector3 portalWallSizes = new Vector3(destinationPortal.Max.X - destinationPortal.Min.X, 
                     destinationPortal.Max.Y - destinationPortal.Min.Y,
                     destinationPortal.Max.Z - destinationPortal.Min.Z);
+                Vector3 newPortalCenter = new Vector3(destinationPortal.Min.X + (portalWallSizes.X / 2.0f),
+                    destinationPortal.Min.Y + (portalWallSizes.Y / 2.0f),
+                    destinationPortal.Min.Z + (portalWallSizes.Z / 2.0f));
                 // Compute the center of the old portal (so we can get out offset from it:
-                Vector3 oldPortalCenter = new Vector3(portalWeHit.Max.X - portalWeHit.Min.X, 
+                Vector3 oldPortalWallSizes = new Vector3(portalWeHit.Max.X - portalWeHit.Min.X,
                     portalWeHit.Max.Y - portalWeHit.Min.Y,
                     portalWeHit.Max.Z - portalWeHit.Min.Z);
+                Vector3 oldPortalCenter = new Vector3(portalWeHit.Min.X + (oldPortalWallSizes.X / 2.0f),
+                    portalWeHit.Min.Y + (oldPortalWallSizes.Y / 2.0f),
+                    portalWeHit.Min.Z + (oldPortalWallSizes.Z / 2.0f));
                 Vector3 offset = oldPortalCenter - mainPlayer.Position;
                 // Set the player there. Hopefully everything worked.
                 mainPlayer.setCameraPosition(newPortalCenter, offset);

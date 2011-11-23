@@ -100,7 +100,8 @@ namespace Fog_Project
         {
             Matrix cameraRotation = Matrix.Identity;
             cameraRotation = Matrix.CreateRotationX(0.0f) * Matrix.CreateRotationY(leftRightRot);
-            position = Vector3.Transform(newPosition - offset, cameraRotation);
+            Vector3 afterOffset = newPosition - offset;
+            position = Vector3.Transform(afterOffset, cameraRotation);
             ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
         }
 
