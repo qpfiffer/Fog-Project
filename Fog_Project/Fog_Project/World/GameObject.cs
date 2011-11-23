@@ -101,6 +101,7 @@ namespace Fog_Project.World
         public void addNewBounding(BoundingSphere toAdd, Vector3 offset)
         {
             BoundingSpheres.Add(toAdd);
+            sphereOffsets.Add(offset);
         }
 
         public virtual void Load(ContentManager gManager)
