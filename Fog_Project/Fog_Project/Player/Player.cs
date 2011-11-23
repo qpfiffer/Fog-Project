@@ -48,7 +48,7 @@ namespace Fog_Project
             base(ref position, ref rotation, gDevice)
         {
             matrices = new MatrixDescriptor();
-            BoundingSphere chestSphere = new BoundingSphere(position, 0.5f);
+            BoundingSphere chestSphere = new BoundingSphere(position, 0.25f);
             base.addNewBounding(chestSphere, Vector3.Zero);
         }
 
@@ -101,7 +101,7 @@ namespace Fog_Project
             Matrix cameraRotation = Matrix.Identity;
             cameraRotation = Matrix.CreateRotationX(0.0f) * Matrix.CreateRotationY(leftRightRot);
             Vector3 afterOffset = newPosition - offset;
-            position = Vector3.Transform(afterOffset, cameraRotation);
+            position = afterOffset;
             ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
         }
 

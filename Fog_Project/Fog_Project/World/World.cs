@@ -200,8 +200,12 @@ namespace Fog_Project.World
                         if (justTeleported == false)
                         {
                             hitPortal = true;
-                            justTeleported = true;
                             portalWeHit = portal;
+                            break;
+                        }
+                        else
+                        {
+                            hitPortal = true;
                             break;
                         }
                     }             
@@ -211,16 +215,8 @@ namespace Fog_Project.World
                 if (hitPortal)
                     break;
             }
-
-            if (hitPortal == false)
-            {
-                // If we got here, we didn't collide with anything and we 
-                // should make sure justTeleported it false;
-                justTeleported = false;
-                Vector3 finalVector = moveVector * amount;
-                mainPlayer.addToCameraPosition(ref finalVector);
-            }
-            else
+        
+            if (hitPortal && !justTeleported)
             {
                 // We hit a portal, probably. We should do something about it.
                 // Get the destination junction of the portal we hit (where it goes):
@@ -246,6 +242,16 @@ namespace Fog_Project.World
                 Vector3 offset = oldPortalCenter - mainPlayer.Position;
                 // Set the player there. Hopefully everything worked.
                 mainPlayer.setCameraPosition(newPortalCenter, offset);
+                justTeleported = true;
+            }
+            else
+            {
+                // If we got here, we didn't collide with anything and we 
+                // should make sure justTeleported it false;'
+                if (!hitPortal)
+                    justTeleported = false;
+                Vector3 finalVector = moveVector * amount;
+                mainPlayer.addToCameraPosition(ref finalVector);
             }
         }
 
