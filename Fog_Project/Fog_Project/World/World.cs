@@ -24,6 +24,7 @@ namespace Fog_Project.World
         BasicEffect globalEffect;
         RasterizerState rState;
         bool justTeleported;
+        bool releaseMouseToggle;
         #endregion
 
         #region World
@@ -47,6 +48,7 @@ namespace Fog_Project.World
             junctions = new List<Junction>();
             modelsToDraw = new List<MetaModel>();
             justTeleported = false;
+            releaseMouseToggle = false;
         }
 
         public void Load(ContentManager gManager, GraphicsDevice gDevice)
@@ -190,18 +192,21 @@ namespace Fog_Project.World
                             hitPortal = true;
                             justTeleported = true;
                             portalWeHit = portal;
-                            return;
+                            break;
                         }
-                    }
+                    }             
                 }
-                
-                // If we got here, we didn't collide with anything and we 
-                // should make sure justTeleported it false;
-                justTeleported = false;
+
+                // No point in continuing if we already hit one:
+                if (hitPortal)
+                    break;
             }
 
             if (!hitPortal)
             {
+                // If we got here, we didn't collide with anything and we 
+                // should make sure justTeleported it false;
+                justTeleported = false;
                 Vector3 finalVector = moveVector * amount;
                 mainPlayer.addToCameraPosition(ref finalVector);
             }
@@ -252,6 +257,12 @@ namespace Fog_Project.World
             {
                 mainPlayer.NoClip = !mainPlayer.NoClip;
             }
+
+            if (info.curKBDState.IsKeyDown(Keys.M) &&
+                info.oldKBDState.IsKeyUp(Keys.M))
+            {
+                releaseMouseToggle = !releaseMouseToggle;
+            }
 #endif
 
             if (info.curKBDState.IsKeyDown(Keys.F) &&
@@ -263,7 +274,8 @@ namespace Fog_Project.World
                 }
             }
 
-            if (info.curMouseState != info.oldMouseState)
+
+            if (info.curMouseState != info.oldMouseState && !releaseMouseToggle)
             {
                 int xDelta = info.curMouseState.X - info.oldMouseState.X;
                 int yDelta = info.curMouseState.Y - info.oldMouseState.Y;
