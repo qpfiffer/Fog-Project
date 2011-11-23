@@ -34,6 +34,10 @@ namespace Fog_Project.World
         // Any random models that are needed:
         List<MetaModel> modelsToDraw;
         #endregion
+
+        #region Debug
+        public int JunctionID { get { return currentJunction.RandID; } }
+        #endregion
         public World()
         {
             Vector3 playerPos = new Vector3(0,Player.chestHeight,3.0f);
@@ -163,8 +167,9 @@ namespace Fog_Project.World
                 for (int i = 0; i < compare; i++)
                 {
                     // Pick a random junction to the list and add it
-                    Junction toAdd = junctions[tRandom.Next(junctions.Count)];
-                    while (toAdd != junction)
+                    int index = tRandom.Next(junctions.Count);
+                    Junction toAdd = junctions[index];
+                    while (toAdd == junction)
                     {
                         // Dirty little thing to do but I've got the processing power.
                         toAdd = junctions[tRandom.Next(junctions.Count)];
@@ -207,7 +212,7 @@ namespace Fog_Project.World
                     break;
             }
 
-            if (!hitPortal)
+            if (hitPortal == false)
             {
                 // If we got here, we didn't collide with anything and we 
                 // should make sure justTeleported it false;

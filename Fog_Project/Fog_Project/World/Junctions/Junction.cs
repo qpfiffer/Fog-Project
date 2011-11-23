@@ -21,11 +21,13 @@ namespace Fog_Project.World
         private List<MetaModel> junctionConnections;
         private Texture2D waterTexture;
         private List<TexturedPlane> waterTiles;
+        private int randID;
         #endregion
 
         #region Properties
         public JunctionType Type { get; set; }
         public List<BoundingBox> Portals { get; set; }
+        public int RandID { get { return randID; } }
         public Dictionary<BoundingBox, Junction> Exits 
         { 
             get 
@@ -44,6 +46,8 @@ namespace Fog_Project.World
             waterTiles = new List<TexturedPlane>();
             junctionConnections = new List<MetaModel>();
             Portals = new List<BoundingBox>();
+            Random temp = new Random();
+            randID = temp.Next(255);
         }
 
         public void Load(ContentManager gManager, string modelName)

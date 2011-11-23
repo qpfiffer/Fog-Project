@@ -187,6 +187,7 @@ namespace Fog_Project
                     spriteBatch.DrawString(mainFont, "UD Rot: " + mWorld.MPlayer.UpDownRot, new Vector2(1, 20), Color.Black);
                     spriteBatch.DrawString(mainFont, " X Pos: " + mWorld.MPlayer.Position.X, new Vector2(1, 40), Color.Black);
                     spriteBatch.DrawString(mainFont, " Z Pos: " + mWorld.MPlayer.Position.Z, new Vector2(1, 60), Color.Black);
+                    spriteBatch.DrawString(mainFont, "RandID: " + mWorld.JunctionID, new Vector2(1, 80), Color.Black);
                     spriteBatch.End();
 #endif
                     break;
