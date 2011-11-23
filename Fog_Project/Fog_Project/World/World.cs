@@ -23,14 +23,13 @@ namespace Fog_Project.World
         GraphicsDevice gDevice;
         BasicEffect globalEffect;
         RasterizerState rState;
+        bool justTeleported;
         #endregion
 
         #region World
         Junction currentJunction;
         // All junctions are kept here:
         List<Junction> junctions;
-        // Spawned junctions:
-        List<Junction> spawnedJunctions;
         // Any random models that are needed:
         List<MetaModel> modelsToDraw;
         #endregion
@@ -46,8 +45,8 @@ namespace Fog_Project.World
 
             mainPlayer = new Player(ref playerPos, ref playerRot, gDevice);
             junctions = new List<Junction>();
-            spawnedJunctions = new List<Junction>();
             modelsToDraw = new List<MetaModel>();
+            justTeleported = false;
         }
 
         public void Load(ContentManager gManager, GraphicsDevice gDevice)
@@ -173,11 +172,60 @@ namespace Fog_Project.World
         private void collideMove(float amount, Vector3 moveVector)
         {
             // Collisions will go here eventually.
-            foreach (BoundingBox portals in currentJunction.Portals)
+            bool hitPortal = false;
+            BoundingBox portalWeHit = new BoundingBox();
+            foreach (BoundingBox portal in currentJunction.Portals)
             {
+                // So what we do here is to teleport them only if they have
+                // hit the portal, and are not still in the portal from a 
+                // previous teleport.
+                foreach (BoundingSphere playerSphere in mainPlayer.BoundingSpheres)
+                {
+                    if (playerSphere.Intersects(portal))
+                    {
+                        // If we are still inside a portal from a previous teleport,
+                        // don't go back:
+                        if (justTeleported == false)
+                        {
+                            hitPortal = true;
+                            justTeleported = true;
+                            portalWeHit = portal;
+                            return;
+                        }
+                    }
+                }
+                
+                // If we got here, we didn't collide with anything and we 
+                // should make sure justTeleported it false;
+                justTeleported = false;
             }
-            Vector3 finalVector = moveVector * amount;
-            mainPlayer.addToCameraPosition(ref finalVector);
+
+            if (!hitPortal)
+            {
+                Vector3 finalVector = moveVector * amount;
+                mainPlayer.addToCameraPosition(ref finalVector);
+            }
+            else
+            {
+                // We hit a portal, probably. We should do something about it.
+                // Get the destination junction of the portal we hit (where it goes):
+                Junction destinationJunction = currentJunction.Exits[portalWeHit];
+                // Make sure we know that we are on the new junction:
+                currentJunction = destinationJunction;
+                // Move the player there:
+                BoundingBox destinationPortal = destinationJunction.getRandomPortal();
+                // Compute the center of the new destination portal:
+                Vector3 newPortalCenter = new Vector3(destinationPortal.Max.X - destinationPortal.Min.X, 
+                    destinationPortal.Max.Y - destinationPortal.Min.Y,
+                    destinationPortal.Max.Z - destinationPortal.Min.Z);
+                // Compute the center of the old portal (so we can get out offset from it:
+                Vector3 oldPortalCenter = new Vector3(portalWeHit.Max.X - portalWeHit.Min.X, 
+                    portalWeHit.Max.Y - portalWeHit.Min.Y,
+                    portalWeHit.Max.Z - portalWeHit.Min.Z);
+                Vector3 offset = oldPortalCenter - mainPlayer.Position;
+                // Set the player there. Hopefully everything worked.
+                mainPlayer.setCameraPosition(newPortalCenter, offset);
+            }
         }
 
         public void Update(GameTime gTime)
@@ -185,6 +233,9 @@ namespace Fog_Project.World
             globalEffect.View = mainPlayer.Matrices.view;
             globalEffect.World = mainPlayer.Matrices.world;
             globalEffect.Projection = mainPlayer.Matrices.proj;
+
+            // Does a lot of sphere creation. Might want to thin it out if it gets slow.
+            mainPlayer.Update(gTime);
         }
 
         public void handleInput(ref InputInfo info)

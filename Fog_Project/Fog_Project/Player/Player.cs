@@ -48,6 +48,8 @@ namespace Fog_Project
             base(ref position, ref rotation, gDevice)
         {
             matrices = new MatrixDescriptor();
+            BoundingSphere chestSphere = new BoundingSphere(position, 0.5f);
+            base.addNewBounding(chestSphere, Vector3.Zero);
         }
 
         public void rotateCamera(ref Point mouseDifference, float timeDifference)
@@ -94,12 +96,17 @@ namespace Fog_Project
             ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
         }
 
-        public void setCameraPosition(ref Vector3 newPosition)
+        public void setCameraPosition(Vector3 newPosition, Vector3 offset)
         {
             Matrix cameraRotation = Matrix.Identity;
             cameraRotation = Matrix.CreateRotationX(0.0f) * Matrix.CreateRotationY(leftRightRot);
-            position = Vector3.Transform(newPosition, cameraRotation);
+            position = Vector3.Transform(newPosition - offset, cameraRotation);
             ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
+        }
+
+        public override void Update(GameTime gTime)
+        {
+            base.Update(gTime);
         }
     }
 }

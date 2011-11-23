@@ -17,6 +17,7 @@ namespace Fog_Project.World
         protected MetaModel model;
         protected BasicEffect material;
         protected GraphicsDevice gDevice;
+        protected List<Vector3> sphereOffsets;
         #endregion
 
         #region Properties
@@ -76,6 +77,7 @@ namespace Fog_Project.World
             leftRightRot = rotation.X;
             upDownRot = rotation.Y;
             boundingSpheres = new List<BoundingSphere>();
+            sphereOffsets = new List<Vector3>();
         }
 
         /// <summary>
@@ -93,9 +95,10 @@ namespace Fog_Project.World
             model.Position = position;
             model.Rotation = rotation;
             boundingSpheres = new List<BoundingSphere>();
+            sphereOffsets = new List<Vector3>();
         }
 
-        public void addNewBounding(ref BoundingSphere toAdd)
+        public void addNewBounding(BoundingSphere toAdd, Vector3 offset)
         {
             BoundingSpheres.Add(toAdd);
         }
@@ -117,11 +120,10 @@ namespace Fog_Project.World
 
         public virtual void Update(GameTime gTime)
         {
-            foreach (BoundingSphere sphere in BoundingSpheres)
+            for (int i = 0; i < boundingSpheres.Count; i++)
             {
-                // Move each bounding sphere to its place around this object's
-                // position. You'll probably have to store offsets for each
-                // sphere somewhere.
+                boundingSpheres[i] = new BoundingSphere(position - sphereOffsets[i],
+                    boundingSpheres[i].Radius);
             }
         }
     }

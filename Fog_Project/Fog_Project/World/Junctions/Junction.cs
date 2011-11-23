@@ -26,6 +26,13 @@ namespace Fog_Project.World
         #region Properties
         public JunctionType Type { get; set; }
         public List<BoundingBox> Portals { get; set; }
+        public Dictionary<BoundingBox, Junction> Exits 
+        { 
+            get 
+            { 
+                return exits; 
+            } 
+        }
         public int Rotations { get; set; }
         #endregion
         public Junction(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
@@ -78,13 +85,14 @@ namespace Fog_Project.World
             }
         }
 
+        /// <summary>
+        /// Returns a random portal.
+        /// </summary>
+        /// <returns></returns>
         public BoundingBox getRandomPortal()
         {
-            // This is probably a pretty shitty way to do this.
             Random tRandom = new Random();
-            BoundingBox[] tempKeyHolder = new BoundingBox[exits.Keys.Count];
-            exits.Keys.CopyTo(tempKeyHolder, 0);
-            return (tempKeyHolder[tRandom.Next(tempKeyHolder.Length)]);
+            return Portals[tRandom.Next(Portals.Count)];
         }
 
         private void CreateJunctionConnections(ContentManager gManager)
