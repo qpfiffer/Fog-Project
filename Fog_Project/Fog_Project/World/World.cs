@@ -185,15 +185,16 @@ namespace Fog_Project.World
         {
             // Collisions will go here eventually.
             bool hitPortal = false;
-            BoundingBox portalWeHit = new BoundingBox();
-            foreach (BoundingBox portal in currentJunction.Portals)
+            Portal portalWeHit = new Portal();
+
+            foreach (Portal portal in currentJunction.Portals)
             {
                 // So what we do here is to teleport them only if they have
                 // hit the portal, and are not still in the portal from a 
                 // previous teleport.
                 foreach (BoundingSphere playerSphere in mainPlayer.BoundingSpheres)
                 {
-                    if (playerSphere.Intersects(portal))
+                    if (playerSphere.Intersects(portal.portalBox))
                     {
                         // If we are still inside a portal from a previous teleport,
                         // don't go back:
@@ -224,24 +225,28 @@ namespace Fog_Project.World
                 // Make sure we know that we are on the new junction:
                 currentJunction = destinationJunction;
                 // Move the player there:
-                BoundingBox destinationPortal = destinationJunction.getRandomPortal();
+                Portal destinationPortal = destinationJunction.getRandomPortal();
+                BoundingBox destPortalBox = destinationPortal.portalBox;
+                BoundingBox hitPortalBox = portalWeHit.portalBox;
                 // Compute the center of the new destination portal:
-                Vector3 portalWallSizes = new Vector3(destinationPortal.Max.X - destinationPortal.Min.X, 
-                    destinationPortal.Max.Y - destinationPortal.Min.Y,
-                    destinationPortal.Max.Z - destinationPortal.Min.Z);
-                Vector3 newPortalCenter = new Vector3(destinationPortal.Min.X + (portalWallSizes.X / 2.0f),
-                    destinationPortal.Min.Y + (portalWallSizes.Y / 2.0f),
-                    destinationPortal.Min.Z + (portalWallSizes.Z / 2.0f));
+                Vector3 portalWallSizes = new Vector3(destPortalBox.Max.X - destPortalBox.Min.X,
+                    destPortalBox.Max.Y - destPortalBox.Min.Y,
+                    destPortalBox.Max.Z - destPortalBox.Min.Z);
+                Vector3 newPortalCenter = new Vector3(destPortalBox.Min.X + (portalWallSizes.X / 2.0f),
+                    destPortalBox.Min.Y + (portalWallSizes.Y / 2.0f),
+                    destPortalBox.Min.Z + (portalWallSizes.Z / 2.0f));
                 // Compute the center of the old portal (so we can get out offset from it:
-                Vector3 oldPortalWallSizes = new Vector3(portalWeHit.Max.X - portalWeHit.Min.X,
-                    portalWeHit.Max.Y - portalWeHit.Min.Y,
-                    portalWeHit.Max.Z - portalWeHit.Min.Z);
-                Vector3 oldPortalCenter = new Vector3(portalWeHit.Min.X + (oldPortalWallSizes.X / 2.0f),
-                    portalWeHit.Min.Y + (oldPortalWallSizes.Y / 2.0f),
-                    portalWeHit.Min.Z + (oldPortalWallSizes.Z / 2.0f));
+                Vector3 oldPortalWallSizes = new Vector3(hitPortalBox.Max.X - hitPortalBox.Min.X,
+                    hitPortalBox.Max.Y - hitPortalBox.Min.Y,
+                    hitPortalBox.Max.Z - hitPortalBox.Min.Z);
+                Vector3 oldPortalCenter = new Vector3(hitPortalBox.Min.X + (oldPortalWallSizes.X / 2.0f),
+                    hitPortalBox.Min.Y + (oldPortalWallSizes.Y / 2.0f),
+                    hitPortalBox.Min.Z + (oldPortalWallSizes.Z / 2.0f));
                 Vector3 offset = oldPortalCenter - mainPlayer.Position;
                 // Set the player there. Hopefully everything worked.
                 mainPlayer.setCameraPosition(newPortalCenter, offset);
+                mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
+                    newPortalCenter.Z), 90.0f);
                 justTeleported = true;
             }
             else
@@ -261,8 +266,6 @@ namespace Fog_Project.World
             globalEffect.World = mainPlayer.Matrices.world;
             globalEffect.Projection = mainPlayer.Matrices.proj;
 
-            mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(currentJunction.Position.X,
-                    currentJunction.Position.Z), 0.5f);
             // Does a lot of sphere creation. Might want to thin it out if it gets slow.
             mainPlayer.Update(gTime);
         }
@@ -280,13 +283,6 @@ namespace Fog_Project.World
                 info.oldKBDState.IsKeyUp(Keys.N))
             {
                 mainPlayer.NoClip = !mainPlayer.NoClip;
-            }
-
-            if (info.curKBDState.IsKeyDown(Keys.G) &&
-                info.oldKBDState.IsKeyUp(Keys.G))
-            {
-                mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(currentJunction.Position.X,
-                    currentJunction.Position.Z), 90.0f);
             }
 
             if (info.curKBDState.IsKeyDown(Keys.M) &&

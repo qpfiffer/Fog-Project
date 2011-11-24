@@ -10,13 +10,18 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Fog_Project.World
 {
     public enum JunctionType { single, corner, triple, quad };
+    public struct Portal
+    {
+        public BoundingBox portalBox;
+        public float forwardVectorRotation;
+    }
     /// <summary>
     /// The class all junction pieces inherit from.
     /// </summary>
     class Junction: GameObject
     {
         #region Fields
-        private Dictionary<BoundingBox, Junction> exits;
+        private Dictionary<Portal, Junction> exits;
         private List<MetaModel> giblies;
         private List<MetaModel> junctionConnections;
         private Texture2D waterTexture;
@@ -26,9 +31,9 @@ namespace Fog_Project.World
 
         #region Properties
         public JunctionType Type { get; set; }
-        public List<BoundingBox> Portals { get; set; }
+        public List<Portal> Portals { get; set; }
         public int RandID { get { return randID; } }
-        public Dictionary<BoundingBox, Junction> Exits 
+        public Dictionary<Portal, Junction> Exits 
         { 
             get 
             { 
@@ -40,12 +45,12 @@ namespace Fog_Project.World
         public Junction(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
             : base(ref position, ref rotation, gDevice)
         {
-            exits = new Dictionary<BoundingBox, Junction>();
+            exits = new Dictionary<Portal, Junction>();
             Type = JunctionType.single; // Gets set later.
             giblies = new List<MetaModel>();
             waterTiles = new List<TexturedPlane>();
             junctionConnections = new List<MetaModel>();
-            Portals = new List<BoundingBox>();
+            Portals = new List<Portal>();
             Random temp = new Random();
             randID = temp.Next(255);
         }
@@ -78,7 +83,7 @@ namespace Fog_Project.World
         public void addPortalJunctions(List<Junction> toAdd)
         {
             Random tRandom = new Random();
-            BoundingBox[] tempKeyHolder = new BoundingBox[exits.Keys.Count];
+            Portal[] tempKeyHolder = new Portal[exits.Keys.Count];
             exits.Keys.CopyTo(tempKeyHolder, 0);
             int usedKeys = 0;
 
@@ -93,7 +98,7 @@ namespace Fog_Project.World
         /// Returns a random portal.
         /// </summary>
         /// <returns></returns>
-        public BoundingBox getRandomPortal()
+        public Portal getRandomPortal()
         {
             Random tRandom = new Random();
             return Portals[tRandom.Next(Portals.Count)];
@@ -128,13 +133,13 @@ namespace Fog_Project.World
                 {
                     temp.Rotation = new Vector3(0, 0, 0);
                     Vector3 BoundingBoxPosition;
-                    BoundingBox newPortal = new BoundingBox();
+                    Portal newPortal = new Portal();
                     if (i == 0)
                     {
                         temp.Position = new Vector3(position.X + 12.5f, position.Y, position.Z);
                         BoundingBoxPosition = new Vector3(position.X + 7.5f,
                                 Player.chestHeight, position.Z);
-                        newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                        newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                             BoundingBoxPosition + new Vector3(BBOX_SIZE));
                     }
                     else
@@ -142,7 +147,7 @@ namespace Fog_Project.World
                         temp.Position = new Vector3(position.X - 12.5f, position.Y, position.Z);
                         BoundingBoxPosition = new Vector3(position.X - 7.5f,
                                 Player.chestHeight, position.Z);
-                        newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                        newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                             BoundingBoxPosition + new Vector3(BBOX_SIZE));
                     }
                     exits.Add(newPortal, null);
@@ -202,35 +207,35 @@ namespace Fog_Project.World
                     // In addition to positioning, we also create the bounding boxes that will serve
                     // as portals to the other junctions:
                     Vector3 BoundingBoxPosition;
-                    BoundingBox newPortal = new BoundingBox();
+                    Portal newPortal = new Portal();
                     switch (i % 4)
                     {
                         case 0:
                             temp.Position = new Vector3(position.X, position.Y, position.Z - 15.0f);
                             BoundingBoxPosition = new Vector3(position.X,
                                 Player.chestHeight, position.Z - 10.0f);
-                            newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                            newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE));
                             break;
                         case 1:
                             temp.Position = new Vector3(position.X + 15.0f, position.Y, position.Z);
                             BoundingBoxPosition = new Vector3(position.X + 10.0f,
                                 Player.chestHeight, position.Z);
-                            newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                            newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE));                          
                             break;
                         case 2:
                             temp.Position = new Vector3(position.X, position.Y, position.Z + 15.0f);
                             BoundingBoxPosition = new Vector3(position.X,
                                 Player.chestHeight, position.Z + 10.0f);
-                            newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                            newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE));
                             break;
                         case 3:
                             temp.Position = new Vector3(position.X - 15.0f, position.Y, position.Z);
                             BoundingBoxPosition = new Vector3(position.X - 10.0f,
                                 Player.chestHeight, position.Z);
-                            newPortal = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
+                            newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE));
                             break;
                     }
@@ -299,9 +304,9 @@ namespace Fog_Project.World
             ModelUtil.DrawModel(model, material);
 
 #if DEBUG
-            foreach (BoundingBox portal in exits.Keys)
+            foreach (Portal portal in Portals)
             {
-                BoundingBoxRenderer.Render(portal,
+                BoundingBoxRenderer.Render(portal.portalBox,
                     gDevice,
                     material.View,
                     material.Projection,
