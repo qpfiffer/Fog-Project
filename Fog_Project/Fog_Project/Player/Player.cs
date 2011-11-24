@@ -79,7 +79,9 @@ namespace Fog_Project
         /// <param name="degrees">How far to rotate.</param>
         public void rotateCameraAboutYAxisPoint(Vector2 point, float degrees)
         {
-            // Gotten from here: http://stackoverflow.com/q/2259502
+            if (degrees == 0.0f)
+                return;
+
             Vector3 newPosition = position;
             float radians = MathHelper.ToRadians(degrees);
             newPosition.X = point.X + 

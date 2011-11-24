@@ -141,6 +141,7 @@ namespace Fog_Project.World
                                 Player.chestHeight, position.Z);
                         newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                             BoundingBoxPosition + new Vector3(BBOX_SIZE));
+                        newPortal.forwardVectorRotation = 180.0f;
                     }
                     else
                     {
@@ -149,6 +150,7 @@ namespace Fog_Project.World
                                 Player.chestHeight, position.Z);
                         newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                             BoundingBoxPosition + new Vector3(BBOX_SIZE));
+                        newPortal.forwardVectorRotation = 0.0f;
                     }
                     exits.Add(newPortal, null);
                     Portals.Add(newPortal);
@@ -216,13 +218,15 @@ namespace Fog_Project.World
                                 Player.chestHeight, position.Z - 10.0f);
                             newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE));
+                            newPortal.forwardVectorRotation = 270.0f;
                             break;
                         case 1:
                             temp.Position = new Vector3(position.X + 15.0f, position.Y, position.Z);
                             BoundingBoxPosition = new Vector3(position.X + 10.0f,
                                 Player.chestHeight, position.Z);
                             newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
-                                BoundingBoxPosition + new Vector3(BBOX_SIZE));                          
+                                BoundingBoxPosition + new Vector3(BBOX_SIZE));
+                            newPortal.forwardVectorRotation = 180.0f;
                             break;
                         case 2:
                             temp.Position = new Vector3(position.X, position.Y, position.Z + 15.0f);
@@ -230,6 +234,7 @@ namespace Fog_Project.World
                                 Player.chestHeight, position.Z + 10.0f);
                             newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE));
+                            newPortal.forwardVectorRotation = 90.0f;
                             break;
                         case 3:
                             temp.Position = new Vector3(position.X - 15.0f, position.Y, position.Z);
@@ -237,6 +242,7 @@ namespace Fog_Project.World
                                 Player.chestHeight, position.Z);
                             newPortal.portalBox = new BoundingBox(BoundingBoxPosition - new Vector3(BBOX_SIZE),
                                 BoundingBoxPosition + new Vector3(BBOX_SIZE));
+                            newPortal.forwardVectorRotation = 0.0f;
                             break;
                     }
                     exits.Add(newPortal, null);
@@ -304,20 +310,20 @@ namespace Fog_Project.World
             ModelUtil.DrawModel(model, material);
 
 #if DEBUG
-            foreach (Portal portal in Portals)
-            {
-                BoundingBoxRenderer.Render(portal.portalBox,
-                    gDevice,
-                    material.View,
-                    material.Projection,
-                    Color.Red);
-            }
+            //foreach (Portal portal in Portals)
+            //{
+            //    BoundingBoxRenderer.Render(portal.portalBox,
+            //        gDevice,
+            //        material.View,
+            //        material.Projection,
+            //        Color.Red);
+            //}
 #endif
 
-            foreach (TexturedPlane tile in waterTiles)
-            {
-                ModelUtil.DrawTexturedPlane(tile, material);
-            }
+            //foreach (TexturedPlane tile in waterTiles)
+            //{
+            //    ModelUtil.DrawTexturedPlane(tile, material);
+            //}
 
             foreach (MetaModel gibly in giblies)
             {

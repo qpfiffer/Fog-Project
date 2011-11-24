@@ -246,7 +246,7 @@ namespace Fog_Project.World
                 // Set the player there. Hopefully everything worked.
                 mainPlayer.setCameraPosition(newPortalCenter, offset);
                 mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
-                    newPortalCenter.Z), 90.0f);
+                    newPortalCenter.Z), destinationPortal.forwardVectorRotation - MathHelper.ToDegrees(mainPlayer.LeftRightRot));
                 justTeleported = true;
             }
             else
