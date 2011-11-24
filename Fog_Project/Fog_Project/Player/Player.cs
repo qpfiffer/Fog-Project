@@ -72,6 +72,30 @@ namespace Fog_Project
             }
         }
 
+        /// <summary>
+        /// Rotates the camera.
+        /// </summary>
+        /// <param name="point">The point about which to rotate.</param>
+        /// <param name="degrees">How far to rotate.</param>
+        public void rotateCameraAboutYAxisPoint(Vector2 point, float degrees)
+        {
+            // Gotten from here: http://stackoverflow.com/q/2259502
+            Vector3 newPosition = position;
+            float radians = MathHelper.ToRadians(degrees);
+            newPosition.X = point.X + 
+                (float)(Math.Cos(radians) * (newPosition.X - point.X) -
+                Math.Sin(radians) * (newPosition.Z - point.Y));
+            newPosition.Z = point.Y +
+                (float)(Math.Sin(radians) * (newPosition.X - point.X) +
+                Math.Cos(radians) * (newPosition.Z - point.Y));
+            
+            position = newPosition;
+            
+            leftRightRot -= radians;
+
+            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
+        }
+
         public void addToCameraPosition(ref Vector3 toAdd)
         {
             float localMoveSpeed = moveSpeed;

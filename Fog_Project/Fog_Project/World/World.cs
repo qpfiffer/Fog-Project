@@ -208,7 +208,7 @@ namespace Fog_Project.World
                             hitPortal = true;
                             break;
                         }
-                    }             
+                    }
                 }
 
                 // No point in continuing if we already hit one:
@@ -261,6 +261,8 @@ namespace Fog_Project.World
             globalEffect.World = mainPlayer.Matrices.world;
             globalEffect.Projection = mainPlayer.Matrices.proj;
 
+            mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(currentJunction.Position.X,
+                    currentJunction.Position.Z), 0.5f);
             // Does a lot of sphere creation. Might want to thin it out if it gets slow.
             mainPlayer.Update(gTime);
         }
@@ -278,6 +280,13 @@ namespace Fog_Project.World
                 info.oldKBDState.IsKeyUp(Keys.N))
             {
                 mainPlayer.NoClip = !mainPlayer.NoClip;
+            }
+
+            if (info.curKBDState.IsKeyDown(Keys.G) &&
+                info.oldKBDState.IsKeyUp(Keys.G))
+            {
+                mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(currentJunction.Position.X,
+                    currentJunction.Position.Z), 90.0f);
             }
 
             if (info.curKBDState.IsKeyDown(Keys.M) &&
