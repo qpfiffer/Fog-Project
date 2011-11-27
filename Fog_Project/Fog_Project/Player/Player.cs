@@ -92,13 +92,17 @@ namespace Fog_Project
 
             Vector3 newPosition = position;
             float radians = MathHelper.ToRadians(degrees);
-            newPosition.X = point.X + 
-                (float)(Math.Cos(radians) * (newPosition.X - point.X) -
-                Math.Sin(radians) * (newPosition.Z - point.Y));
-            newPosition.Z = point.Y +
-                (float)(Math.Sin(radians) * (newPosition.X - point.X) +
-                Math.Cos(radians) * (newPosition.Z - point.Y));
             
+            float xAddition = (float)(Math.Cos(radians) * (newPosition.X - point.X) -
+                Math.Sin(radians) * (newPosition.Z - point.Y));
+            float yAddition = (float)(Math.Sin(radians) * (newPosition.X - point.X) +
+                Math.Cos(radians) * (newPosition.Z - point.Y));
+
+            System.Diagnostics.Debug.WriteLine("XAddition: " + xAddition + " YAddition: " + yAddition);
+
+            newPosition.X = point.X + xAddition;
+            newPosition.Z = point.Y + yAddition;
+                            
             position = newPosition;
             
             leftRightRot -= radians;

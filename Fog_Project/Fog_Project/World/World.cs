@@ -261,8 +261,8 @@ namespace Fog_Project.World
                         System.Diagnostics.Debug.WriteLine("SHIIIIT");
                         differenceValue = MathHelper.Clamp(differenceValue, -90.0f, 90.0f);
                     }
-                    //mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
-                    //    newPortalCenter.Z), differenceValue);
+                    mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
+                        newPortalCenter.Z), differenceValue);
                 }
                 System.Diagnostics.Debug.WriteLine("From: " + destinationPortal.forwardVectorRotation + 
                     " To: " + portalWeHit.forwardVectorRotation + " Difference value is: " + differenceValue);

@@ -259,7 +259,7 @@ namespace Fog_Project.World
                 throw new Exception("Why is waterTiles null?");
 
             const float oceanTileSize = 2.5f;
-            const int numTiles = 4;
+            const int numTiles = 6;
             for (int x = -numTiles; x < numTiles; x++)
             {
                 for (int y = -numTiles; y < numTiles; y++)
@@ -310,14 +310,14 @@ namespace Fog_Project.World
             ModelUtil.DrawModel(model, material);
 
 #if DEBUG
-            foreach (Portal portal in Portals)
-            {
-                BoundingBoxRenderer.Render(portal.portalBox,
-                    gDevice,
-                    material.View,
-                    material.Projection,
-                    Color.Red);
-            }
+            //foreach (Portal portal in Portals)
+            //{
+            //    BoundingBoxRenderer.Render(portal.portalBox,
+            //        gDevice,
+            //        material.View,
+            //        material.Projection,
+            //        Color.Red);
+            //}
 #endif
 
             //foreach (TexturedPlane tile in waterTiles)
