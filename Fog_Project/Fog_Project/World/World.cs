@@ -259,7 +259,7 @@ namespace Fog_Project.World
                         differenceValue < -90.0f)
                     {
                         System.Diagnostics.Debug.WriteLine("SHIIIIT");
-                        differenceValue = MathHelper.Clamp(differenceValue, -90.0f, 90.0f);
+                        differenceValue = -(MathHelper.Clamp(differenceValue, -90.0f, 90.0f));
                     }
                     mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
                         newPortalCenter.Z), differenceValue);
