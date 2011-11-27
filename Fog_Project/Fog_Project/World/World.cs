@@ -259,12 +259,14 @@ namespace Fog_Project.World
                         differenceValue < -90.0f)
                     {
                         System.Diagnostics.Debug.WriteLine("SHIIIIT");
-                        MathHelper.Clamp(differenceValue, -90.0f, 90.0f);
+                        differenceValue = MathHelper.Clamp(differenceValue, -90.0f, 90.0f);
                     }
-                    mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
-                        newPortalCenter.Z), -differenceValue);
+                    //mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
+                    //    newPortalCenter.Z), differenceValue);
                 }
-                System.Diagnostics.Debug.WriteLine("Difference value is: " + differenceValue);
+                System.Diagnostics.Debug.WriteLine("From: " + destinationPortal.forwardVectorRotation + 
+                    " To: " + portalWeHit.forwardVectorRotation + " Difference value is: " + differenceValue);
+                mainPlayer.rotationTarget = new Vector2(newPortalCenter.X, newPortalCenter.Z);
                 justTeleported = true;
             }
             else
@@ -285,7 +287,7 @@ namespace Fog_Project.World
             globalEffect.Projection = mainPlayer.Matrices.proj;
 
             // Does a lot of sphere creation. Might want to thin it out if it gets slow.
-            //mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(currentJunction.Position.X, currentJunction.Position.Z), 0.5f);
+            //mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(currentJunction.Position.X, currentJunction.Position.Z), -1.0f);
             mainPlayer.Update(gTime);
         }
 
@@ -308,6 +310,18 @@ namespace Fog_Project.World
                 info.oldKBDState.IsKeyUp(Keys.M))
             {
                 releaseMouseToggle = !releaseMouseToggle;
+            }
+
+            if (info.curKBDState.IsKeyDown(Keys.G) &&
+                info.oldKBDState.IsKeyUp(Keys.G))
+            {
+                mainPlayer.rotateCameraAboutYAxisPoint(mainPlayer.rotationTarget, 90.0f);
+            }
+
+            if (info.curKBDState.IsKeyDown(Keys.R) &&
+                info.oldKBDState.IsKeyUp(Keys.R))
+            {
+                mainPlayer.rotateEnabled = !mainPlayer.rotateEnabled;
             }
 #endif
 

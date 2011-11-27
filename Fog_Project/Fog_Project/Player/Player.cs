@@ -17,6 +17,8 @@ namespace Fog_Project
         private MatrixDescriptor matrices;
         #endregion
         #region Properties
+        public Vector2 rotationTarget { get; set; }
+        public bool rotateEnabled { get; set; }
         /// <summary>
         /// Controls whether noclip is enabled or not.
         /// </summary>
@@ -47,6 +49,7 @@ namespace Fog_Project
         public Player(ref Vector3 position, ref Vector2 rotation, GraphicsDevice gDevice):
             base(ref position, ref rotation, gDevice)
         {
+            this.rotateEnabled = false;
             matrices = new MatrixDescriptor();
             BoundingSphere chestSphere = new BoundingSphere(position, 0.25f);
             base.addNewBounding(chestSphere, Vector3.Zero);
@@ -82,6 +85,11 @@ namespace Fog_Project
             if (degrees == 0.0f)
                 return;
 
+            if (degrees < 0.0f)
+            {
+                degrees = 360.0f + degrees;
+            }
+
             Vector3 newPosition = position;
             float radians = MathHelper.ToRadians(degrees);
             newPosition.X = point.X + 
@@ -94,6 +102,16 @@ namespace Fog_Project
             position = newPosition;
             
             leftRightRot -= radians;
+
+            while (leftRightRot > (2 * Math.PI))
+            {
+                leftRightRot -= (float)(2 * Math.PI);
+            }
+
+            while (leftRightRot < (-2 * Math.PI))
+            {
+                leftRightRot += (float)(2 * Math.PI);
+            }
 
             ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
         }
@@ -133,6 +151,9 @@ namespace Fog_Project
 
         public override void Update(GameTime gTime)
         {
+            if (rotateEnabled)
+                rotateCameraAboutYAxisPoint(new Vector2(rotationTarget.X, rotationTarget.Y), -1.0f);
+
             base.Update(gTime);
         }
     }
