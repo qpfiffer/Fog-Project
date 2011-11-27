@@ -245,8 +245,26 @@ namespace Fog_Project.World
                 Vector3 offset = oldPortalCenter - mainPlayer.Position;
                 // Set the player there. Hopefully everything worked.
                 mainPlayer.setCameraPosition(newPortalCenter, offset);
-                mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
-                    newPortalCenter.Z), destinationPortal.forwardVectorRotation - MathHelper.ToDegrees(mainPlayer.LeftRightRot));
+                float differenceValue = destinationPortal.forwardVectorRotation - portalWeHit.forwardVectorRotation;
+                // We only need to rotate if we're not doing symmetrical cases
+                if (Math.Abs(differenceValue) == 0.0f)
+                {
+                    mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
+                        newPortalCenter.Z), 180.0f);
+                }
+                else if (Math.Abs(differenceValue) != 180.0f)
+                {
+
+                    if (differenceValue > 90.0f ||
+                        differenceValue < -90.0f)
+                    {
+                        System.Diagnostics.Debug.WriteLine("SHIIIIT");
+                        MathHelper.Clamp(differenceValue, -90.0f, 90.0f);
+                    }
+                    mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
+                        newPortalCenter.Z), -differenceValue);
+                }
+                System.Diagnostics.Debug.WriteLine("Difference value is: " + differenceValue);
                 justTeleported = true;
             }
             else
@@ -267,6 +285,7 @@ namespace Fog_Project.World
             globalEffect.Projection = mainPlayer.Matrices.proj;
 
             // Does a lot of sphere creation. Might want to thin it out if it gets slow.
+            //mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(currentJunction.Position.X, currentJunction.Position.Z), 0.5f);
             mainPlayer.Update(gTime);
         }
 

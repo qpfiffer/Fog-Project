@@ -37,7 +37,7 @@ namespace Fog_Project
         #endregion
         #region Constants
         public const float rotationSpeed = 0.3f;
-        public const float moveSpeed = 2.5f;
+        public const float moveSpeed = 3.5f;
         public const float chestHeight = 1.0f;
         public const float floorBoxHeight = chestHeight - 0.5f;
         public const float gravity = 0.35f;
