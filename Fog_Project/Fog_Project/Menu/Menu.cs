@@ -184,7 +184,7 @@ namespace Fog_Project
 
             foreach (TexturedPlane tPlane in oceanTiles)
             {
-                ModelUtil.DrawTexturedPlane(tPlane, globalEffect);
+                ModelUtil.DrawTexturedPlane(tPlane, ref globalEffect);
             }
 
             // Draw the title of the menu:

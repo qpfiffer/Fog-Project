@@ -28,6 +28,16 @@ namespace Fog_Project.Utilities
         public IndexBuffer iBuffer;
     }
 
+    public struct ColoredPlane
+    {
+        public GraphicsDevice gDevice;
+        public Color color;
+        public VertexPositionColor[] vertices;
+        public short[] indices;
+        public VertexBuffer vBuffer;
+        public IndexBuffer iBuffer;
+    }
+
     public struct MatrixDescriptor
     {
         public Matrix view  { get; set; }
@@ -181,11 +191,13 @@ namespace Fog_Project.Utilities
                 mesh.Draw();
             }
         }
-        public static void DrawTexturedPlane(TexturedPlane plane, BasicEffect effect)
+
+        public static void DrawTexturedPlane(TexturedPlane plane, ref BasicEffect effect)
         {
             effect.LightingEnabled = false;
             effect.TextureEnabled = true;
             effect.Texture = plane.texture;
+
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 plane.gDevice.Indices = plane.iBuffer;
                 plane.gDevice.SetVertexBuffer(plane.vBuffer);
@@ -194,7 +206,30 @@ namespace Fog_Project.Utilities
                     plane.vertices.Length, 0, 2);
             }
 
+            effect.LightingEnabled = true;
         }
+        
+        public static void DrawColoredPlane(ColoredPlane plane, ref BasicEffect effect)
+        {
+            effect.LightingEnabled = false;
+            effect.TextureEnabled = false;
+            effect.VertexColorEnabled = true;
+
+            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+            {
+                plane.gDevice.Indices = plane.iBuffer;
+                plane.gDevice.SetVertexBuffer(plane.vBuffer);
+                pass.Apply();
+                plane.gDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
+                    plane.vertices.Length, 0, 2);
+            }
+
+            effect.LightingEnabled = true;
+            effect.TextureEnabled = true;
+            effect.VertexColorEnabled = false;
+
+        }
+
         public static TexturedPlane CreateTexturedPlane(Vector3 position, Vector2 size, Texture2D texture, GraphicsDevice gDevice)
         {
             #region gDevice_Check
@@ -231,6 +266,45 @@ namespace Fog_Project.Utilities
             toReturn.iBuffer.SetData(toReturn.indices);
             toReturn.vBuffer = new VertexBuffer(gDevice, VertexPositionTexture.VertexDeclaration, toReturn.vertices.Length, BufferUsage.WriteOnly);
             toReturn.vBuffer.SetData<VertexPositionTexture>(toReturn.vertices);
+            return toReturn;
+        }
+
+        public static ColoredPlane CreateColoredPlane(Vector3 position, Vector2 size, Color color, GraphicsDevice gDevice)
+        {
+            #region gDevice_Check
+            if (gDevice == null)
+            {
+                throw new Exception("Graphics Device is null.");
+            }
+            #endregion
+            ColoredPlane toReturn = new ColoredPlane();
+            toReturn.gDevice = gDevice;
+            toReturn.indices = new short[6] { 1, 2, 0, 1, 3, 2 };
+            toReturn.vertices = new VertexPositionColor[4];
+            toReturn.color = color;
+            #region Vertex_Creation
+            // Planes are drawn like this:
+            // 0__1   Z
+            // |__|   |__ X
+            // 2  3
+            // With counter clockwise culling on, we only get the top. -QWP
+            toReturn.vertices[0].Position = new Vector3(position.X - (size.X / 2), position.Y, position.Z - (size.Y / 2));
+            //toReturn.vertices[0].Normal = Vector3.Up;
+            toReturn.vertices[0].Color = color;
+            toReturn.vertices[1].Position = new Vector3(position.X + (size.X / 2), position.Y, position.Z - (size.Y / 2));
+            //toReturn.vertices[1].Normal = Vector3.Up;
+            toReturn.vertices[0].Color = color;
+            toReturn.vertices[2].Position = new Vector3(position.X - (size.X / 2), position.Y, position.Z + (size.Y / 2));
+            //toReturn.vertices[2].Normal = Vector3.Up;
+            toReturn.vertices[0].Color = color;
+            toReturn.vertices[3].Position = new Vector3(position.X + (size.X / 2), position.Y, position.Z + (size.Y / 2));
+            //toReturn.vertices[3].Normal = Vector3.Up;
+            toReturn.vertices[0].Color = color;
+            #endregion
+            toReturn.iBuffer = new IndexBuffer(gDevice, typeof(short), toReturn.indices.Length, BufferUsage.WriteOnly);
+            toReturn.iBuffer.SetData(toReturn.indices);
+            toReturn.vBuffer = new VertexBuffer(gDevice, VertexPositionColor.VertexDeclaration, toReturn.vertices.Length, BufferUsage.WriteOnly);
+            toReturn.vBuffer.SetData<VertexPositionColor>(toReturn.vertices);
             return toReturn;
         }
     }

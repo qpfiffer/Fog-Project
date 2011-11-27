@@ -258,8 +258,8 @@ namespace Fog_Project.World
             if (waterTiles == null)
                 throw new Exception("Why is waterTiles null?");
 
-            const float oceanTileSize = 5.0f;
-            const int numTiles = 6;
+            const float oceanTileSize = 1.25f;
+            const int numTiles = 14;
             for (int x = -numTiles; x < numTiles; x++)
             {
                 for (int y = -numTiles; y < numTiles; y++)
@@ -322,7 +322,7 @@ namespace Fog_Project.World
 
             foreach (TexturedPlane tile in waterTiles)
             {
-                ModelUtil.DrawTexturedPlane(tile, material);
+                ModelUtil.DrawTexturedPlane(tile, ref material);
             }
 
             foreach (MetaModel gibly in giblies)
