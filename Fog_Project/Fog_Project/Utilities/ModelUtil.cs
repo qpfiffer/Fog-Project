@@ -22,7 +22,7 @@ namespace Fog_Project.Utilities
     {
         public Texture2D texture;
         public GraphicsDevice gDevice;
-        public VertexPositionNormalTexture[] vertices;
+        public VertexPositionTexture[] vertices;
         public short[] indices;
         public VertexBuffer vBuffer;
         public IndexBuffer iBuffer;
@@ -183,10 +183,10 @@ namespace Fog_Project.Utilities
         }
         public static void DrawTexturedPlane(TexturedPlane plane, BasicEffect effect)
         {
+            effect.LightingEnabled = false;
+            effect.TextureEnabled = true;
+            effect.Texture = plane.texture;
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
-                effect.TextureEnabled = true;
-                effect.Texture = plane.texture;
-
                 plane.gDevice.Indices = plane.iBuffer;
                 plane.gDevice.SetVertexBuffer(plane.vBuffer);
                 pass.Apply();
@@ -202,12 +202,11 @@ namespace Fog_Project.Utilities
             {
                 throw new Exception("Graphics Device is null.");
             }
-            #endregion
-
+            #endregion         
             TexturedPlane toReturn = new TexturedPlane();
             toReturn.gDevice = gDevice;
             toReturn.indices = new short[6] { 1, 2, 0, 1, 3, 2 };
-            toReturn.vertices = new VertexPositionNormalTexture[4];
+            toReturn.vertices = new VertexPositionTexture[4];
             toReturn.texture = texture;
             #region Vertex_Creation
             // Planes are drawn like this:
@@ -216,22 +215,22 @@ namespace Fog_Project.Utilities
             // 2  3
             // With counter clockwise culling on, we only get the top. -QWP
             toReturn.vertices[0].Position = new Vector3(position.X - (size.X / 2), position.Y, position.Z - (size.Y / 2));
-            toReturn.vertices[0].Normal = Vector3.Up;
+            //toReturn.vertices[0].Normal = Vector3.Up;
             toReturn.vertices[0].TextureCoordinate = new Vector2(1, 1);
             toReturn.vertices[1].Position = new Vector3(position.X + (size.X / 2), position.Y, position.Z - (size.Y / 2));
-            toReturn.vertices[1].Normal = Vector3.Up;
+            //toReturn.vertices[1].Normal = Vector3.Up;
             toReturn.vertices[1].TextureCoordinate = new Vector2(0, 1);
             toReturn.vertices[2].Position = new Vector3(position.X - (size.X / 2), position.Y, position.Z + (size.Y / 2));
-            toReturn.vertices[2].Normal = Vector3.Up;
+            //toReturn.vertices[2].Normal = Vector3.Up;
             toReturn.vertices[2].TextureCoordinate = new Vector2(1, 0);
             toReturn.vertices[3].Position = new Vector3(position.X + (size.X / 2), position.Y, position.Z + (size.Y / 2));
-            toReturn.vertices[3].Normal = Vector3.Up;
+            //toReturn.vertices[3].Normal = Vector3.Up;
             toReturn.vertices[3].TextureCoordinate = new Vector2(0, 0);
             #endregion
             toReturn.iBuffer = new IndexBuffer(gDevice, typeof(short), toReturn.indices.Length, BufferUsage.WriteOnly);
             toReturn.iBuffer.SetData(toReturn.indices);
-            toReturn.vBuffer = new VertexBuffer(gDevice, VertexPositionNormalTexture.VertexDeclaration, toReturn.vertices.Length, BufferUsage.WriteOnly);
-            toReturn.vBuffer.SetData<VertexPositionNormalTexture>(toReturn.vertices);
+            toReturn.vBuffer = new VertexBuffer(gDevice, VertexPositionTexture.VertexDeclaration, toReturn.vertices.Length, BufferUsage.WriteOnly);
+            toReturn.vBuffer.SetData<VertexPositionTexture>(toReturn.vertices);
             return toReturn;
         }
     }
