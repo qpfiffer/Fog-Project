@@ -52,7 +52,7 @@ namespace Fog_Project.World
             junctionConnections = new List<MetaModel>();
             Portals = new List<Portal>();
             Random temp = new Random();
-            randID = temp.Next(255);
+            randID = temp.Next(100);
         }
 
         public void Load(ContentManager gManager, string modelName)

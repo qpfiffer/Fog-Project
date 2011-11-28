@@ -30,7 +30,7 @@ namespace Fog_Project.Particles
             timeToDie = false;
         }
 
-        void Update(GameTime gTime)
+        public void Update(GameTime gTime)
         {
             if (startLife == TimeSpan.MaxValue)
             {
@@ -45,12 +45,12 @@ namespace Fog_Project.Particles
             }
         }
 
-        bool shouldDie()
+        private bool shouldDie()
         {
             return timeToDie;
         }
 
-        void Draw(GraphicsDevice gDevice)
+        public void Draw(GraphicsDevice gDevice)
         {
         }
     }
