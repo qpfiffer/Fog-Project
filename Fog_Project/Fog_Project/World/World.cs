@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Fog_Project.Interfaces;
 using Fog_Project.Utilities;
 
@@ -28,6 +29,7 @@ namespace Fog_Project.World
         #endregion
 
         #region World
+        Song bgMusic;
         Junction currentJunction;
         // All junctions are kept here:
         List<Junction> junctions;
@@ -58,7 +60,11 @@ namespace Fog_Project.World
         public void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
             this.gDevice = gDevice;
-            this.gManager = gManager;                    
+            this.gManager = gManager;
+
+            bgMusic = gManager.Load<Song>("Audio/world_bg_song");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(bgMusic);
 
             SetupJunctions(gManager, gDevice);
             // Move the player to the first junction:

@@ -49,9 +49,7 @@
       <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Audio\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="Textures\Particles\fogParticle.png">
       <Name>fogParticle</Name>
@@ -132,6 +130,13 @@
       <Name>tower</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\world_bg_song.mp3">
+      <Name>world_bg_song</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
