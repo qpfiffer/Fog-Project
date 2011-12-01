@@ -179,6 +179,17 @@ namespace Fog_Project.World
                 junction.addPortalJunctions(portalsToAdd);
             }
             #endregion
+
+            #region Spawn_Odd_Models
+            MetaModel tower = new MetaModel();
+            //Junction nearbyJunction = junctions[tRandom.Next(junctions.Count)];
+            Junction nearbyJunction = junctions[0];
+            tower.Position = new Vector3(nearbyJunction.Position.X + 7.5f, -1.0f, nearbyJunction.Position.Z + 7.5f);
+            tower.Rotation = new Vector3(MathHelper.ToRadians(5.0f), 0.0f, MathHelper.ToRadians(5.0f));
+            tower.model = gManager.Load<Model>("Models/Giblies/tower");
+            tower.Texture = gManager.Load<Texture2D>("Textures/Giblies/tower");
+            modelsToDraw.Add(tower);
+            #endregion
         }
 
         private void collideMove(float amount, Vector3 moveVector)
@@ -245,6 +256,16 @@ namespace Fog_Project.World
                 Vector3 offset = oldPortalCenter - mainPlayer.Position;
                 // Set the player there. Hopefully everything worked.
                 mainPlayer.setCameraPosition(newPortalCenter, offset);
+
+                //for (int i = 0; i < modelsToDraw.Count; i++)
+                //{
+                //    Vector3 newVector = modelsToDraw[i].Position;
+                //    MetaModel toModify = modelsToDraw[i];
+                //    newVector += newPortalCenter - offset;
+                //    toModify.Position = newVector;
+                //    modelsToDraw[i] = toModify;
+                //}
+
                 float differenceValue = destinationPortal.forwardVectorRotation - portalWeHit.forwardVectorRotation;
                 // We only need to rotate if we're not doing symmetrical cases
                 if (Math.Abs(differenceValue) == 0.0f)
@@ -258,14 +279,14 @@ namespace Fog_Project.World
                     if (differenceValue > 90.0f ||
                         differenceValue < -90.0f)
                     {
-                        System.Diagnostics.Debug.WriteLine("SHIIIIT");
+                        //System.Diagnostics.Debug.WriteLine("SHIIIIT");
                         differenceValue = -(MathHelper.Clamp(differenceValue, -90.0f, 90.0f));
                     }
                     mainPlayer.rotateCameraAboutYAxisPoint(new Vector2(newPortalCenter.X,
                         newPortalCenter.Z), differenceValue);
                 }
-                System.Diagnostics.Debug.WriteLine("From: " + destinationPortal.forwardVectorRotation + 
-                    " To: " + portalWeHit.forwardVectorRotation + " Difference value is: " + differenceValue);
+                //System.Diagnostics.Debug.WriteLine("From: " + destinationPortal.forwardVectorRotation + 
+                //    " To: " + portalWeHit.forwardVectorRotation + " Difference value is: " + differenceValue);
                 mainPlayer.rotationTarget = new Vector2(newPortalCenter.X, newPortalCenter.Z);
                 justTeleported = true;
             }
@@ -392,10 +413,10 @@ namespace Fog_Project.World
             currentJunction.updateMatrices(mainPlayer.Matrices);
             currentJunction.Draw(gDevice);
 
-            //foreach (MetaModel model in modelsToDraw)
-            //{
-            //    ModelUtil.DrawModel(model, globalEffect);
-            //}
+            foreach (MetaModel model in modelsToDraw)
+            {
+                ModelUtil.DrawModel(model, globalEffect);
+            }
         }
     }
 }
