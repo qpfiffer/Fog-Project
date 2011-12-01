@@ -81,7 +81,7 @@ namespace Fog_Project.World
                 ref cMatrices);
             // Set the pieces of out matrix descriptor:
             cMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f),
-                gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
+                gDevice.Viewport.AspectRatio, 0.1f, 1000.0f);
             cMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
 
             // Update the global effect:
