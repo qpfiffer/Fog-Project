@@ -190,8 +190,8 @@ namespace Fog_Project.World
             MetaModel tower = new MetaModel();
             //Junction nearbyJunction = junctions[tRandom.Next(junctions.Count)];
             Junction nearbyJunction = junctions[0];
-            tower.Position = new Vector3(nearbyJunction.Position.X + 7.5f, -1.0f, nearbyJunction.Position.Z + 7.5f);
-            tower.Rotation = new Vector3(MathHelper.ToRadians(5.0f), 0.0f, MathHelper.ToRadians(5.0f));
+            tower.Position = new Vector3(nearbyJunction.Position.X, 10.0f, nearbyJunction.Position.Z);
+            tower.Rotation = new Vector3(MathHelper.ToRadians(180.0f), 0.0f, MathHelper.ToRadians(5.0f));
             tower.model = gManager.Load<Model>("Models/Giblies/tower");
             tower.Texture = gManager.Load<Texture2D>("Textures/Giblies/tower");
             modelsToDraw.Add(tower);
@@ -350,7 +350,6 @@ namespace Fog_Project.World
             {
                 mainPlayer.rotateEnabled = !mainPlayer.rotateEnabled;
             }
-#endif
 
             if (info.curKBDState.IsKeyDown(Keys.F) &&
                 info.oldKBDState.IsKeyUp(Keys.F))
@@ -360,6 +359,7 @@ namespace Fog_Project.World
                     junction.ToggleFog();
                 }
             }
+#endif
 
 
             if (info.curMouseState != info.oldMouseState && !releaseMouseToggle)
