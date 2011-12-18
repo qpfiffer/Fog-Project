@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fog_Project", "Fog_Project\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fog_ProjectContent", "Fog_Project\Fog_ProjectContent\Fog_ProjectContent.contentproj", "{D259E199-6DB9-4C13-82D2-E6FBB1729AA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoundingBoxImporter", "BoundingBoxImporter\BoundingBoxImporter.csproj", "{731520D6-4310-45D5-9209-E2013A165DF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -17,6 +19,10 @@ Global
 		{84E36DDE-3379-4FC1-BD9D-79B69E9DEA06}.Release|x86.Build.0 = Release|x86
 		{D259E199-6DB9-4C13-82D2-E6FBB1729AA4}.Debug|x86.ActiveCfg = Debug|x86
 		{D259E199-6DB9-4C13-82D2-E6FBB1729AA4}.Release|x86.ActiveCfg = Release|x86
+		{731520D6-4310-45D5-9209-E2013A165DF3}.Debug|x86.ActiveCfg = Debug|x86
+		{731520D6-4310-45D5-9209-E2013A165DF3}.Debug|x86.Build.0 = Debug|x86
+		{731520D6-4310-45D5-9209-E2013A165DF3}.Release|x86.ActiveCfg = Release|x86
+		{731520D6-4310-45D5-9209-E2013A165DF3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
