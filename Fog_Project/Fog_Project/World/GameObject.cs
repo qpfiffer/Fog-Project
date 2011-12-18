@@ -13,11 +13,12 @@ namespace Fog_Project.World
         #region Fields
         protected Vector3 position;
         protected List<BoundingSphere> boundingSpheres;
+        protected List<BoundingBox> boundingBoxes;
         protected float leftRightRot, upDownRot;
         protected MetaModel model;
         protected BasicEffect material;
         protected GraphicsDevice gDevice;
-        protected List<Vector3> sphereOffsets;
+        protected List<Vector3> boundingOffsets;
         #endregion
 
         #region Properties
@@ -33,6 +34,10 @@ namespace Fog_Project.World
         public List<BoundingSphere> BoundingSpheres
         {
             get { return boundingSpheres; }
+        }
+        public List<BoundingBox> BoundingBoxes
+        {
+            get { return boundingBoxes; }
         }
         public float LeftRightRot
         {
@@ -77,7 +82,8 @@ namespace Fog_Project.World
             leftRightRot = rotation.X;
             upDownRot = rotation.Y;
             boundingSpheres = new List<BoundingSphere>();
-            sphereOffsets = new List<Vector3>();
+            boundingBoxes = new List<BoundingBox>();
+            boundingOffsets = new List<Vector3>();
         }
 
         /// <summary>
@@ -95,13 +101,21 @@ namespace Fog_Project.World
             model.Position = position;
             model.Rotation = rotation;
             boundingSpheres = new List<BoundingSphere>();
-            sphereOffsets = new List<Vector3>();
+            boundingBoxes = new List<BoundingBox>();
+            boundingOffsets = new List<Vector3>();
         }
 
         public void addNewBounding(BoundingSphere toAdd, Vector3 offset)
         {
             BoundingSpheres.Add(toAdd);
-            sphereOffsets.Add(offset);
+            boundingOffsets.Add(offset);
+        }
+
+        public void addNewBounding(BoundingBox toAdd, Vector3 offset)
+        {
+            boundingBoxes.Add(toAdd);
+            boundingOffsets.Add(offset);
+            
         }
 
         public virtual void Load(ContentManager gManager)
@@ -123,8 +137,18 @@ namespace Fog_Project.World
         {
             for (int i = 0; i < boundingSpheres.Count; i++)
             {
-                boundingSpheres[i] = new BoundingSphere(position - sphereOffsets[i],
+                boundingSpheres[i] = new BoundingSphere(position - boundingOffsets[i],
                     boundingSpheres[i].Radius);
+            }
+
+            for (int i = 0; i < boundingBoxes.Count; i++)
+            {
+                Vector3 curMin = boundingBoxes[i].Min;
+                Vector3 curMax = boundingBoxes[i].Max;
+
+                Vector3 minActual = position - curMin;
+                Vector3 maxActual = position - curMax;
+                boundingBoxes[i] = new BoundingBox(minActual - boundingOffsets[i], maxActual - boundingOffsets[i]);
             }
         }
     }
