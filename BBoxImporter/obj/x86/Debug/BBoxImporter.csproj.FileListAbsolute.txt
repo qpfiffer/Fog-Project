@@ -1,0 +1,5 @@
+D:\Code\egb_polycode\Fog_Project\BBoxImporter\bin\x86\Debug\BBoxImporter.dll
+D:\Code\egb_polycode\Fog_Project\BBoxImporter\bin\x86\Debug\BBoxImporter.pdb
+D:\Code\egb_polycode\Fog_Project\BBoxImporter\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Code\egb_polycode\Fog_Project\BBoxImporter\obj\x86\Debug\BBoxImporter.dll
+D:\Code\egb_polycode\Fog_Project\BBoxImporter\obj\x86\Debug\BBoxImporter.pdb

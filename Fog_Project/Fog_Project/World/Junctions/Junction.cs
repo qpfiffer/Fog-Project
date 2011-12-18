@@ -310,14 +310,37 @@ namespace Fog_Project.World
             ModelUtil.DrawModel(model, material);
 
 #if DEBUG
-            //foreach (Portal portal in Portals)
-            //{
-            //    BoundingBoxRenderer.Render(portal.portalBox,
-            //        gDevice,
-            //        material.View,
-            //        material.Projection,
-            //        Color.Red);
-            //}
+            foreach (Portal portal in Portals)
+            {
+                BoundingBoxRenderer.Render(portal.portalBox,
+                    gDevice,
+                    material.View,
+                    material.Projection,
+                    Color.Red);
+            }
+
+            if (model.model.Tag != null)
+            {
+                // The tag is where we put the data from our model processor.
+                List<BoundingBox> boxesToDraw = ((object[])model.model.Tag)[0] as List<BoundingBox>;
+                foreach (BoundingBox bBox in boxesToDraw)
+                {
+                    BoundingBoxRenderer.Render(bBox,
+                        gDevice,
+                        material.View,
+                        material.Projection,
+                        Color.Blue);
+                }
+            }
+
+            foreach (Portal portal in Portals)
+            {
+                BoundingBoxRenderer.Render(portal.portalBox,
+                    gDevice,
+                    material.View,
+                    material.Projection,
+                    Color.Red);
+            }
 #endif
 
             foreach (TexturedPlane tile in waterTiles)

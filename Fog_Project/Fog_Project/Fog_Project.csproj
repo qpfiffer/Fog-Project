@@ -127,9 +127,9 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BoundingBoxImporter\BoundingBoxImporter.csproj">
-      <Project>{731520D6-4310-45D5-9209-E2013A165DF3}</Project>
-      <Name>BoundingBoxImporter</Name>
+    <ProjectReference Include="..\..\BBoxImporter\BBoxImporter.csproj">
+      <Project>{4040585A-7282-4FDD-89D6-0A80CAEE8A9C}</Project>
+      <Name>BBoxImporter</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fog_ProjectContent\Fog_ProjectContent.contentproj">
       <Name>Fog_ProjectContent</Name>
