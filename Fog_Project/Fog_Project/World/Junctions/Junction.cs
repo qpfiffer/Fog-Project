@@ -325,7 +325,10 @@ namespace Fog_Project.World
                 List<BoundingBox> boxesToDraw = ((object[])model.model.Tag)[0] as List<BoundingBox>;
                 foreach (BoundingBox bBox in boxesToDraw)
                 {
-                    BoundingBoxRenderer.Render(bBox,
+                    Matrix translationMatrix = Matrix.CreateTranslation(model.Position);
+                    BoundingBox test = new BoundingBox(Vector3.Transform(bBox.Min, translationMatrix),
+                        Vector3.Transform(bBox.Max, translationMatrix));
+                    BoundingBoxRenderer.Render(test,
                         gDevice,
                         material.View,
                         material.Projection,
