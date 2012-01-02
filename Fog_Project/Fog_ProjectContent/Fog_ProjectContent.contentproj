@@ -73,7 +73,7 @@
     <Compile Include="Models\Giblies\bench.fbx">
       <Name>bench</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>Importer</Processor>
       <ProcessorParameters_Scale>1.5</ProcessorParameters_Scale>
     </Compile>
   </ItemGroup>
@@ -100,7 +100,7 @@
     <Compile Include="Models\Junctions\junctionSingle.fbx">
       <Name>junctionSingle</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>Importer</Processor>
     </Compile>
     <Compile Include="Models\Junctions\junctionT.fbx">
       <Name>junctionT</Name>

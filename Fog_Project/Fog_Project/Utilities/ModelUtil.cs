@@ -15,7 +15,7 @@ namespace Fog_Project.Utilities
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
         public Texture2D Texture { get; set; }
-        public BoundingBox BBox { get; set; }
+        public List<BoundingBox> BBoxes { get; set; }
     }
 
     public struct TexturedPlane
@@ -160,6 +160,35 @@ namespace Fog_Project.Utilities
             globalEffect.EnableDefaultLighting();
             globalEffect.TextureEnabled = true;
             return globalEffect;
+        }
+
+        /// <summary>
+        /// You should call this every time you change the position or rotation of a metaModel.
+        /// It will update the boundingbox information so that it is in the right place.
+        /// </summary>
+        /// <param name="m">The model to update</param>
+        public static void UpdateBoundingBoxes(ref MetaModel m)
+        {
+            List<BoundingBox> toSet = new List<BoundingBox>();
+
+            Matrix translationMatrix = Matrix.CreateRotationX(m.Rotation.X);
+            translationMatrix *= Matrix.CreateRotationY(m.Rotation.Y);
+            translationMatrix *= Matrix.CreateRotationZ(m.Rotation.Z);
+            translationMatrix *= Matrix.CreateTranslation(m.Position);
+
+            List<BoundingBox> generatedBBoxes = ((object[])m.model.Tag)[0] as List<BoundingBox>;
+
+            if (generatedBBoxes != null)
+            {
+                foreach (BoundingBox bBox in generatedBBoxes)
+                {
+                    BoundingBox newBBox = new BoundingBox(Vector3.Transform(bBox.Min, translationMatrix),
+                        Vector3.Transform(bBox.Max, translationMatrix));
+                    toSet.Add(newBBox);
+                }
+            }
+
+            m.BBoxes = toSet;
         }
 
         public static void DrawModel(MetaModel m, BasicEffect globalEffect)

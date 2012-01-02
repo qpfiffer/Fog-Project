@@ -28,6 +28,10 @@ namespace Fog_Project.World
             set
             {
                 model.Position = value;
+                
+                if (model.model != null)
+                    ModelUtil.UpdateBoundingBoxes(ref model);
+                
                 this.position = value;
             }
         }
@@ -99,7 +103,7 @@ namespace Fog_Project.World
             upDownRot = 0.0f;
             model = new MetaModel();
             model.Position = position;
-            model.Rotation = rotation;
+            model.Rotation = rotation;            
             boundingSpheres = new List<BoundingSphere>();
             boundingBoxes = new List<BoundingBox>();
             boundingOffsets = new List<Vector3>();

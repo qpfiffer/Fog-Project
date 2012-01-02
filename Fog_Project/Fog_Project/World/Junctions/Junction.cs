@@ -78,6 +78,8 @@ namespace Fog_Project.World
             // This is the texture used for all of the water tiles around this junction:
             waterTexture = gManager.Load<Texture2D>("Textures/Ocean/ocean");             
             createWaterTiles();
+
+            ModelUtil.UpdateBoundingBoxes(ref model);
         }
 
         public void addPortalJunctions(List<Junction> toAdd)
@@ -126,6 +128,7 @@ namespace Fog_Project.World
                         temp.Position = new Vector3(position.X - 5.0f, position.Y, position.Z);
                     }
                     junctionConnections.Add(temp);
+                    ModelUtil.UpdateBoundingBoxes(ref temp);
                 }
                 #endregion
                 #region Outer
@@ -155,6 +158,7 @@ namespace Fog_Project.World
                     exits.Add(newPortal, null);
                     Portals.Add(newPortal);
                     junctionConnections.Add(temp);
+                    ModelUtil.UpdateBoundingBoxes(ref temp);
                 }
                 #endregion
             }
@@ -189,7 +193,7 @@ namespace Fog_Project.World
                             temp.Position = new Vector3(position.X - 7.5f, position.Y, position.Z); 
                             break;
                     }
-
+                    ModelUtil.UpdateBoundingBoxes(ref temp);
                     junctionConnections.Add(temp);
                 }
                 #endregion
@@ -248,9 +252,10 @@ namespace Fog_Project.World
                     exits.Add(newPortal, null);
                     Portals.Add(newPortal);
                     junctionConnections.Add(temp);
+                    ModelUtil.UpdateBoundingBoxes(ref temp);
                 }
                 #endregion
-            }
+            }           
         }
 
         private void createWaterTiles()
@@ -289,6 +294,7 @@ namespace Fog_Project.World
                 bench.Texture = gManager.Load<Texture2D>("Textures/Giblies/bench");
 
                 giblies.Add(bench);
+                ModelUtil.UpdateBoundingBoxes(ref bench);
             }
             #endregion
         }
@@ -319,22 +325,19 @@ namespace Fog_Project.World
                     Color.Red);
             }
 
-            if (model.model.Tag != null)
+            if (model.BBoxes == null) 
             {
-                // The tag is where we put the data from our model processor.
-                List<BoundingBox> boxesToDraw = ((object[])model.model.Tag)[0] as List<BoundingBox>;
-                foreach (BoundingBox bBox in boxesToDraw)
-                {
-                    Matrix translationMatrix = Matrix.CreateTranslation(model.Position);
-                    BoundingBox test = new BoundingBox(Vector3.Transform(bBox.Min, translationMatrix),
-                        Vector3.Transform(bBox.Max, translationMatrix));
-                    BoundingBoxRenderer.Render(test,
-                        gDevice,
-                        material.View,
-                        material.Projection,
-                        Color.Blue);
-                }
+                ModelUtil.UpdateBoundingBoxes(ref model);
             }
+                // The tag is where we put the data from our model processor.
+            foreach (BoundingBox bBox in model.BBoxes)
+            {                    
+                BoundingBoxRenderer.Render(bBox,
+                    gDevice,
+                    material.View,
+                    material.Projection,
+                    Color.Blue);
+            }        
 
             foreach (Portal portal in Portals)
             {
@@ -354,11 +357,35 @@ namespace Fog_Project.World
             foreach (MetaModel gibly in giblies)
             {
                 ModelUtil.DrawModel(gibly, material);
+                if (gibly.model.Tag != null)
+                {
+                    // The tag is where we put the data from our model processor.
+                    foreach (BoundingBox bBox in gibly.BBoxes)
+                    {
+                        BoundingBoxRenderer.Render(bBox,
+                            gDevice,
+                            material.View,
+                            material.Projection,
+                            Color.Blue);
+                    }
+                }
             }
 
             foreach (MetaModel junctionC in junctionConnections)
             {
                 ModelUtil.DrawModel(junctionC, material);
+                if (junctionC.model.Tag != null)
+                {
+                    // The tag is where we put the data from our model processor.
+                    foreach (BoundingBox bBox in junctionC.BBoxes)
+                    {
+                        BoundingBoxRenderer.Render(bBox,
+                            gDevice,
+                            material.View,
+                            material.Projection,
+                            Color.Blue);
+                    }
+                }
             }
         }
     }
