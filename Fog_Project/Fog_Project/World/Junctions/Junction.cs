@@ -325,11 +325,6 @@ namespace Fog_Project.World
                     Color.Red);
             }
 
-            if (model.BBoxes == null) 
-            {
-                ModelUtil.UpdateBoundingBoxes(ref model);
-            }
-                // The tag is where we put the data from our model processor.
             foreach (BoundingBox bBox in model.BBoxes)
             {                    
                 BoundingBoxRenderer.Render(bBox,
@@ -357,7 +352,8 @@ namespace Fog_Project.World
             foreach (MetaModel gibly in giblies)
             {
                 ModelUtil.DrawModel(gibly, material);
-                if (gibly.model.Tag != null)
+#if DEBUG
+                if (gibly.BBoxes != null)
                 {
                     // The tag is where we put the data from our model processor.
                     foreach (BoundingBox bBox in gibly.BBoxes)
@@ -369,12 +365,14 @@ namespace Fog_Project.World
                             Color.Blue);
                     }
                 }
+#endif
             }
 
             foreach (MetaModel junctionC in junctionConnections)
             {
                 ModelUtil.DrawModel(junctionC, material);
-                if (junctionC.model.Tag != null)
+#if DEBUG
+                if (junctionC.BBoxes != null)
                 {
                     // The tag is where we put the data from our model processor.
                     foreach (BoundingBox bBox in junctionC.BBoxes)
@@ -386,6 +384,7 @@ namespace Fog_Project.World
                             Color.Blue);
                     }
                 }
+#endif
             }
         }
     }

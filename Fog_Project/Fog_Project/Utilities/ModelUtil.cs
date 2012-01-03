@@ -198,26 +198,29 @@ namespace Fog_Project.Utilities
 
             foreach (ModelMesh mesh in m.model.Meshes)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                if (mesh.Name.Contains("bounding") == false)
                 {
-                    effect.FogEnabled = globalEffect.FogEnabled;
-                    effect.FogColor = globalEffect.FogColor;
-                    effect.FogStart = globalEffect.FogStart;
-                    effect.FogEnd = globalEffect.FogEnd;
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.FogEnabled = globalEffect.FogEnabled;
+                        effect.FogColor = globalEffect.FogColor;
+                        effect.FogStart = globalEffect.FogStart;
+                        effect.FogEnd = globalEffect.FogEnd;
 
-                    effect.EnableDefaultLighting();                 
-                    effect.Texture = m.Texture;
-                    effect.TextureEnabled = globalEffect.TextureEnabled;
+                        effect.EnableDefaultLighting();
+                        effect.Texture = m.Texture;
+                        effect.TextureEnabled = globalEffect.TextureEnabled;
 
-                    effect.View = globalEffect.View;
-                    effect.Projection = globalEffect.Projection;
-                    effect.World = transforms[mesh.ParentBone.Index];
-                    effect.World *= Matrix.CreateRotationX(m.Rotation.X);
-                    effect.World *= Matrix.CreateRotationY(m.Rotation.Y);
-                    effect.World *= Matrix.CreateRotationY(m.Rotation.Z);
-                    effect.World *= Matrix.CreateTranslation(m.Position);
+                        effect.View = globalEffect.View;
+                        effect.Projection = globalEffect.Projection;
+                        effect.World = transforms[mesh.ParentBone.Index];
+                        effect.World *= Matrix.CreateRotationX(m.Rotation.X);
+                        effect.World *= Matrix.CreateRotationY(m.Rotation.Y);
+                        effect.World *= Matrix.CreateRotationY(m.Rotation.Z);
+                        effect.World *= Matrix.CreateTranslation(m.Position);
+                    }
+                    mesh.Draw();
                 }
-                mesh.Draw();
             }
         }
 

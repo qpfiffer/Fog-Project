@@ -29,7 +29,7 @@ namespace BBoxImporter
         {
             foreach (NodeContent o in content.Children)
             {
-                if (o is MeshContent)
+                if (o is MeshContent && o.Name.Contains("bounding"))
                 {
                     // Get VertData
                     GetAllVerticies((MeshContent)o);
@@ -135,10 +135,7 @@ namespace BBoxImporter
 
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            // Calculate Mesh Tangents.
-            GenerateNormals(input, context);
-
-            // Calculate Mesh Normals.
+            //GenerateNormals(input, context);
             GenerateTangents(input, context);
 
             // Setup bounding box data.

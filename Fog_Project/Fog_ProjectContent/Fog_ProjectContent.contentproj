@@ -117,13 +117,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Junctions\junctionQuad.fbx">
-      <Name>junctionQuad</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>Importer</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Models\Giblies\tower.fbx">
       <Name>tower</Name>
       <Importer>FbxImporter</Importer>
@@ -142,6 +135,13 @@
       <Name>world_bg_song</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Junctions\junctionQuad.fbx">
+      <Name>junctionQuad</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>Importer</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
